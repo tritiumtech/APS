@@ -94,6 +94,5 @@ public class TestClass {
         env.jobs.add(new Job("0008","2022-11-05T09:30:00+08:00",allSkills.get(7),4500));
         env.jobs.add(new Job("0009","2022-12-11T09:30:00+10:00",allSkills.get(2),2100));
         env.jobs.add(new Job("0010","2023-01-23T09:30:00-01:00",allSkills.get(5),1500));
-
     }
 }
