@@ -19,4 +19,4 @@ There are two types of mutations:
 
 ## Cost function
 The cost function can be customized to rule in multiple factors:
-1. Number of late days (or $$days \times pieces$$, or $$days \times amount$$)
+1. Number of late days (or $days \times pieces$, or $days \times amount$)
