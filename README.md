@@ -20,3 +20,12 @@ There are two types of mutations:
 ## Cost function
 The cost function can be customized to rule in multiple factors:
 1. Number of late days (or $days \times pieces$, or $days \times amount$)
+2. Arbitrary penalties applied to special cases, such as 
+    * Repeating orders allocated to an inexperienced work group
+    * Brand X is a prioritized client, its penalty of delay is set to five times of regular cost
+
+When calculating the cost, we adopt an uncommon strategy. The chromosome encoding scheme only
+keeps the mapping between jobs and work groups, and the sequence of orders in the groups. This is
+based on an assumption: given the sequence of jobs in a work group, it is easy to calculate the 
+optimal time arrangements by shifting the jobs along the timeline. Therefore, the cost of a 
+specific arrangement is actually the minimal cost calculated from a sequence of jobs in a workgroup.
