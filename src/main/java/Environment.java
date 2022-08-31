@@ -14,6 +14,14 @@ public class Environment {
         return -1;
     }
 
+    public int numOfWorkGroups() {
+        int sum = 0;
+        for(Skill skill: workGroups.keySet()) {
+            sum += workGroups.get(skill).size();
+        }
+        return sum;
+    }
+
     public List<WorkGroup> randomPair() throws ApsException {
         // 1 Select skill
         if(workGroups.keySet().size() > 0) {

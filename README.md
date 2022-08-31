@@ -3,15 +3,35 @@ An Advanced Planning & Scheduling system based on genetic algorithms.
 
 ## Chromosome Encoding
 Use a 1-dimensional array to represent an arrangement of tasks. Each 
-task includes two elements: one element designates the work group to which
-the task is allocated, and the other stores the sequence number in that 
-group.
+element in the array designates the work group to which
+the task is allocated. The actual sequence of tasks in the group is 
+determined by a set of rules applied in the cost function.
 
 ## Crossover
-When doing a crossover, we do not allow direct swapping of genes in two 
-chromosomes. Instead, swapping can only occur between two workgroups
-with similar skills.
+When doing a crossover, we are effectively swapping the binding between jobs and workgroups.
+Consider jobs $\cir{A}$, $\cir{B}$, $\cir{C}$, $\cir{D}$, $\cir{E}$
+```
+Before crossover:
 
+chromesome 1: 0-0-1-1-0
+workgrup 0: $\cir{A}$ $\cir{B}$ $\cir{E}$ 
+workgrup 1: $\cir{C}$ $\cir{D}$  
+
+chromesome 1: 1-0-0-1-0
+workgrup 0: $\cir{B}$ $\cir{C}$ $\cir{E}$ 
+workgrup 1: $\cir{A}$ $\cir{D}$  
+
+After crossover from position 3 to 4
+
+chromesome 1: 0-0-0-1-0
+workgrup 0: $\cir{A}$ $\cir{B}$ $\cir{E}$ 
+workgrup 1: $\cir{C}$ $\cir{D}$  
+
+chromesome 1: 1-0-1-1-0
+workgrup 0: $\cir{B}$ $\cir{E}$ 
+workgrup 1: $\cir{A}$ $\cir{C}$ $\cir{D}$  
+
+```
 ## Mutation
 There are two types of mutations:
 1. Swapping the sequence of two jobs in the same work group

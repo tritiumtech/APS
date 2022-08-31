@@ -4,12 +4,19 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TestClass {
+    public static Environment testEnv(){
+        Environment env = new Environment();
+        List<Skill> allSkills = new ArrayList<>();
+        seedWorkGroups(env, allSkills);
+        seedJobs(env,allSkills);
+        return env;
+    }
+
     public static void main(String args[]){
         Environment env = new Environment();
         List<Skill> allSkills = new ArrayList<>();
         seedWorkGroups(env, allSkills);
         seedJobs(env,allSkills);
-
     }
 
     private static void seedWorkGroups(Environment env, List<Skill> allSkills) {
