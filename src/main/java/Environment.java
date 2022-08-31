@@ -1,3 +1,7 @@
+import entities.Job;
+import entities.Skill;
+import exceptions.ApsException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

@@ -1,3 +1,5 @@
+package entities;
+
 import java.time.ZonedDateTime;
 
 public class Job {

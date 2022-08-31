@@ -1,3 +1,5 @@
+package exceptions;
+
 /**
  * @author Amos Zhou
  * Error Codes:

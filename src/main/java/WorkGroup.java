@@ -1,3 +1,7 @@
+import entities.Job;
+import entities.Skill;
+import utils.WorkCalendar;
+
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +11,8 @@ public class WorkGroup {
     public HashMap<Skill, Float> skills;
     public WorkCalendar calendar;
     public List<Job> jobs;
+    public static final int JIT = 0;
+    public static final int Sequential = 0;
 
     public WorkGroup(Skill rootSkill) {
         skills = new HashMap<Skill, Float>();
@@ -28,6 +34,10 @@ public class WorkGroup {
      */
     public void addJob(Job job) {
         this.jobs.add(job);
+    }
+
+    public void autoAdjust(int mode){
+
     }
 
     /**
