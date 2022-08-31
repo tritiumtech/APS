@@ -13,6 +13,14 @@ public class Skill {
         this.level = level;
     }
 
+    public Skill getAncestor(){
+        Skill ancestor = this;
+        while(ancestor.parent!=null){
+            ancestor = ancestor.parent;
+        }
+        return ancestor;
+    }
+
     public void setParent(Skill parent) {
         this.parent = parent;
     }

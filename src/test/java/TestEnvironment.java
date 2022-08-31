@@ -3,12 +3,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class TestClass {
+public class TestEnvironment {
     public static Environment testEnv(){
         Environment env = new Environment();
         List<Skill> allSkills = new ArrayList<>();
         seedWorkGroups(env, allSkills);
+        System.out.println("Work groups initialised: " + env.workGroups.size());
         seedJobs(env,allSkills);
+        System.out.println("Jobs initialised: " + env.jobs.size());
         return env;
     }
 

@@ -16,8 +16,8 @@ public class Arrangement implements Chromosome {
     public int chromosome[];
     public Environment env;
 
-    public Arrangement(int jobCount, Environment env) {
-        chromosome = new int[jobCount];
+    public Arrangement(Environment env) {
+        chromosome = new int[env.jobs.size()];
         this.env = env;
     }
 
@@ -39,8 +39,8 @@ public class Arrangement implements Chromosome {
         System.out.println(i + "," + j);
 
         // 2 互换
-        Arrangement var1 = new Arrangement(chromosome.length, env);
-        Arrangement var2 = new Arrangement(chromosome.length, env);
+        Arrangement var1 = new Arrangement(env);
+        Arrangement var2 = new Arrangement(env);
 
         int x = Math.min(i, j), y = Math.max(i, j) + 1, m = 0;
         for (; m < x; m++) {
@@ -73,8 +73,22 @@ public class Arrangement implements Chromosome {
     }
 
 
-    public void generateInstance() {
-        //TODO Randomly generate an instance based on skill sets
+    public static Arrangement generateInstance(Environment env) throws ApsException {
+        Arrangement arrangement = new Arrangement(env);
+        // 考虑工组品类能力
+        for (int i = 0; i < env.jobs.size(); i++) {
+            Job job = env.jobs.get(i);
+            Skill skillRoot = job.skill.getAncestor();
+            List<WorkGroup> groups = env.workGroups.get(skillRoot);
+            if(groups.size()>0) {
+                // 随机选取
+                int groupIndex = (int) (Math.random() * groups.size());
+                arrangement.chromosome[i] = groupIndex;
+            } else {
+                throw new ApsException("APS003: 不存在工组满足任务所需技能");
+            }
+        }
+        return arrangement;
     }
 
     public String toString() {
