@@ -15,7 +15,6 @@ Consider jobs $\mathbb{A}$, $\mathbb{B}$, $\mathbb{C}$, $\mathbb{D}$, $\mathbb{E
 - chromesome 1: 0-0-1-1-0
 
   - workgrup 0: $\mathbb{A}$ $\mathbb{B}$ $\mathbb{E}$
-
   - workgrup 1: $\mathbb{C}$ $\mathbb{D}$
 
 - chromesome 1: 1-0-0-1-0
@@ -25,12 +24,12 @@ Consider jobs $\mathbb{A}$, $\mathbb{B}$, $\mathbb{C}$, $\mathbb{D}$, $\mathbb{E
 > After crossover from position 3 to 4
 
 - chromesome 1: 0-0-0-1-0
-  - workgrup 0: $\mathbb{A}$ $\mathbb{B}$ $\mathbb{E}$ 
-  - workgrup 1: $\mathbb{C}$ $\mathbb{D}$  
+  - workgrup 0: $\mathbb{A}$ $\mathbb{B}$ $\mathbb{C}$ $\mathbb{E}$ 
+  - workgrup 1: $\mathbb{D}$  
 
 - chromesome 1: 1-0-1-1-0
-  - workgrup 0: $\mathbb{B}$ $\mathbb{E}$ 
-  - workgrup 1: $\mathbb{A}$ $\mathbb{C}$ $\mathbb{D}$  
+  - workgrup 0: $\mathbb{A}$ $\mathbb{C}$ $\mathbb{D}$
+  - workgrup 1: $\mathbb{B}$ $\mathbb{E}$
 
 ```
 ## Mutation
