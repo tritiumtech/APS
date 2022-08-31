@@ -10,11 +10,14 @@ determined by a set of rules applied in the cost function.
 ## Crossover
 When doing a crossover, we are effectively swapping the binding between jobs and workgroups.
 Consider jobs $\mathbb{A}$, $\mathbb{B}$, $\mathbb{C}$, $\mathbb{D}$, $\mathbb{E}$
-```
-Before crossover:\\
+```math
+Before crossover:
+
 
 chromesome 1: 0-0-1-1-0\\
+
 workgrup 0: $$\mathbb{A}$$ $\mathbb{B}$ \mathbb{E}\\
+
 workgrup 1: \mathbb{C} \mathbb{D}  \\
 
 chromesome 1: 1-0-0-1-0
