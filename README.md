@@ -31,10 +31,9 @@ Consider jobs $\mathbb{A}$, $\mathbb{B}$, $\mathbb{C}$, $\mathbb{D}$, $\mathbb{E
   - workgrup 0: $\mathbb{A}$ $\mathbb{C}$ $\mathbb{D}$
   - workgrup 1: $\mathbb{B}$ $\mathbb{E}$
 
-```
 ## Mutation
 There are two types of mutations:
-1. Swapping the sequence of two jobs in the same work group
+1. Swapping two sequences of jobs between compatible work groups
 2. Moving one or more tasks from one group to another (1-directional and without swapping)
 
 ## Cost function
