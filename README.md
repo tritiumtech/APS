@@ -9,27 +9,27 @@ determined by a set of rules applied in the cost function.
 
 ## Crossover
 When doing a crossover, we are effectively swapping the binding between jobs and workgroups.
-Consider jobs $\cir{A}$, $\cir{B}$, $\cir{C}$, $\cir{D}$, $\cir{E}$
+Consider jobs $ \mathbb{A}$, $\mathbb{B}$, $\mathbb{C}$, $\mathbb{D}$, $\mathbb{E}$
 ```
 Before crossover:
 
 chromesome 1: 0-0-1-1-0
-workgrup 0: $\cir{A}$ $\cir{B}$ $\cir{E}$ 
-workgrup 1: $\cir{C}$ $\cir{D}$  
+workgrup 0: \mathbb{A}$ $\mathbb{B}$ $\mathbb{E}$ 
+workgrup 1: $\mathbb{C}$ $\mathbb{D}$  
 
 chromesome 1: 1-0-0-1-0
-workgrup 0: $\cir{B}$ $\cir{C}$ $\cir{E}$ 
-workgrup 1: $\cir{A}$ $\cir{D}$  
+workgrup 0: $\mathbb{B}$ $\mathbb{C}$ $\mathbb{E}$ 
+workgrup 1: \mathbb{A}$ $\mathbb{D}$  
 
 After crossover from position 3 to 4
 
 chromesome 1: 0-0-0-1-0
-workgrup 0: $\cir{A}$ $\cir{B}$ $\cir{E}$ 
-workgrup 1: $\cir{C}$ $\cir{D}$  
+workgrup 0: \mathbb{A}$ $\mathbb{B}$ $\mathbb{E}$ 
+workgrup 1: $\mathbb{C}$ $\mathbb{D}$  
 
 chromesome 1: 1-0-1-1-0
-workgrup 0: $\cir{B}$ $\cir{E}$ 
-workgrup 1: $\cir{A}$ $\cir{C}$ $\cir{D}$  
+workgrup 0: $\mathbb{B}$ $\mathbb{E}$ 
+workgrup 1: \mathbb{A}$ $\mathbb{C}$ $\mathbb{D}$  
 
 ```
 ## Mutation
