@@ -114,7 +114,11 @@ public class WorkGroup {
 
     public double calculateCost(PlanMode mode, ZonedDateTime startDateTime) {
         autoAdjust(mode, startDateTime);
-        return 0;
+        double cost = 0;
+        for(Job job: jobs) {
+            cost += calendar.workDaysBetween(job.endDt, job.deliveryDate);
+        }
+        return cost;
     }
 
     public void clearJobs() {

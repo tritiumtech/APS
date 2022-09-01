@@ -21,7 +21,7 @@ public class TestArrangement {
             List<Arrangement> newPair = a.crossover(b);
             System.out.println(newPair.get(0));
             System.out.println(newPair.get(1));
-            a.cost(env);
+            System.out.println(a.cost(env));
         } catch (ApsException e) {
             e.printStackTrace();
         }

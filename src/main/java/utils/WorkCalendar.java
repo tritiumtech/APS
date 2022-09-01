@@ -27,8 +27,8 @@ public class WorkCalendar {
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime newDate1 = calendar.addWorkDays(now, 5);
         ZonedDateTime newDate = calendar.addWorkDays(now, 5.5f);
-        float x = calendar.workTimeBetween(newDate1, now);
-        float y = calendar.workTimeBetween(now, newDate1);
+        float x = calendar.workDaysBetween(newDate1, now);
+        float y = calendar.workDaysBetween(now, newDate1);
         System.out.println(x);
         System.out.println(y);
         int num = t2.toSecondOfDay() - t1.toSecondOfDay();
@@ -133,10 +133,6 @@ public class WorkCalendar {
         return baseDate;
     }
 
-    public float workDaysBetween(ZonedDateTime startDate, ZonedDateTime endDate) {
-        return -1;
-    }
-
     /**
      * 计算两个时间点之间的工作时间。时间的衡量采用直观计时方式，整数部分为工作日（无论单日工作时长多少），小数部分为按单日
      * 工作时长计算的百分比。例如，若单日工作时长为10小时，5.5代表5.5*10=55个工作时长。
@@ -145,7 +141,7 @@ public class WorkCalendar {
      * @param endDate
      * @return
      */
-    public float workTimeBetween(ZonedDateTime startDate, ZonedDateTime endDate) {
+    public float workDaysBetween(ZonedDateTime startDate, ZonedDateTime endDate) {
         int dayCount = 0;
         float timePart = 0.0f;
         // 往后算 e.g. startDate=2022-09-01 11:00:00, endDate=2022-09-03 10:00:00 / 2022-09-03 15:00:00

@@ -55,7 +55,7 @@ public class Job {
     }
 
     public float workTimeDifference(ZonedDateTime t1EndDt, ZonedDateTime deliveryDate) {
-        return calendar.workTimeBetween(t1EndDt, deliveryDate);
+        return calendar.workDaysBetween(t1EndDt, deliveryDate);
     }
 
     public String toString() {
