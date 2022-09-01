@@ -1,5 +1,5 @@
-import entities.Job;
-import entities.Skill;
+package entities;
+
 import utils.WorkCalendar;
 
 import java.time.ZonedDateTime;

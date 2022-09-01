@@ -1,17 +1,17 @@
 package utils;
 
-import com.base.sbc.aps.entity.TaskMatter;
-import com.base.sbc.config.utils.DateUtils;
+import entities.Job;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.Date;
 
-public class ComparatorByDistance implements Comparator<TaskMatter>, Serializable {
-	public int compare(TaskMatter t1, TaskMatter t2) {
+public class ComparatorByDistance implements Comparator<Job>, Serializable {
+	public int compare(Job t1, Job t2) {
 
-		Date latestStartDt1 = DateUtils.addMinutes(t1.getGiveDate(), -t1.getWorkMinutes());
-		Date latestStartDt2 =DateUtils.addMinutes(t2.getGiveDate(), -t2.getWorkMinutes());
+		ZonedDateTime latestStartDt1 = t1.calcEndDt(t1.deliveryDate, -t1.duration);
+		ZonedDateTime latestStartDt2 = t2.calcEndDt(t2.deliveryDate, -t2.duration);
 
 		return latestStartDt1.compareTo(latestStartDt2);
 	}

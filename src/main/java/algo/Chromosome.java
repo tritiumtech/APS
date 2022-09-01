@@ -1,3 +1,6 @@
+package algo;
+import algo.Arrangement;
+
 import java.util.List;
 
 /**
@@ -8,3 +11,4 @@ public interface Chromosome {
     public List<Arrangement> mutate();
     public double cost();
 }
+

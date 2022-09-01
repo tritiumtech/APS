@@ -1,3 +1,5 @@
+import algo.Arrangement;
+import algo.Environment;
 import exceptions.ApsException;
 
 import java.util.List;

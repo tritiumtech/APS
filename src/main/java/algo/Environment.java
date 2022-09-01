@@ -1,6 +1,11 @@
+package algo;
+
+import algo.Arrangement;
 import entities.Job;
 import entities.Skill;
+import entities.WorkGroup;
 import exceptions.ApsException;
+import utils.WorkCalendar;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +18,11 @@ import java.util.List;
 public class Environment {
     public HashMap<Skill, List<WorkGroup>> workGroups = new HashMap<Skill, List<WorkGroup>>();
     public List<Job> jobs = new ArrayList<>();
+    public WorkCalendar calendar;
 
+    public Environment(WorkCalendar calendar) {
+        this.calendar = calendar;
+    }
     public double evaluate(Arrangement arrangement) {
         return -1;
     }

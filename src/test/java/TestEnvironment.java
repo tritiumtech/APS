@@ -1,6 +1,10 @@
+import algo.Environment;
 import entities.Job;
 import entities.Skill;
+import entities.WorkGroup;
+import utils.WorkCalendar;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,7 +12,8 @@ import java.util.List;
 
 public class TestEnvironment {
     public static Environment testEnv(){
-        Environment env = new Environment();
+        WorkCalendar calendar = new WorkCalendar(LocalTime.now(),LocalTime.now());
+        Environment env = new Environment(calendar);
         List<Skill> allSkills = new ArrayList<>();
         seedWorkGroups(env, allSkills);
         System.out.println("Work groups initialised: " + env.workGroups.size());
@@ -18,7 +23,7 @@ public class TestEnvironment {
     }
 
     public static void main(String args[]){
-        Environment env = new Environment();
+        Environment env = TestEnvironment.testEnv();
         List<Skill> allSkills = new ArrayList<>();
         seedWorkGroups(env, allSkills);
         seedJobs(env,allSkills);
@@ -96,15 +101,15 @@ public class TestEnvironment {
 
     private static void seedJobs(Environment env, List<Skill> allSkills) {
         Collections.shuffle(allSkills);
-        env.jobs.add(new Job("0001","2022-12-03T08:30:00+08:00",allSkills.get(0),1000));
-        env.jobs.add(new Job("0002","2022-09-12T13:30:00+10:00",allSkills.get(1),1250));
-        env.jobs.add(new Job("0003","2022-10-15T09:30:00+11:00",allSkills.get(2),2500));
-        env.jobs.add(new Job("0004","2022-11-19T09:30:00+08:00",allSkills.get(3),300));
-        env.jobs.add(new Job("0005","2022-12-21T09:30:00-08:00",allSkills.get(4),500));
-        env.jobs.add(new Job("0006","2022-11-14T09:30:00+08:00",allSkills.get(5),900));
-        env.jobs.add(new Job("0007","2022-10-29T09:30:00-11:00",allSkills.get(6),827));
-        env.jobs.add(new Job("0008","2022-11-05T09:30:00+08:00",allSkills.get(7),4500));
-        env.jobs.add(new Job("0009","2022-12-11T09:30:00+10:00",allSkills.get(2),2100));
-        env.jobs.add(new Job("0010","2023-01-23T09:30:00-01:00",allSkills.get(5),1500));
+        env.jobs.add(new Job("0001","2022-12-03T08:30:00+08:00",allSkills.get(0),1000,env.calendar));
+        env.jobs.add(new Job("0002","2022-09-12T13:30:00+10:00",allSkills.get(1),1250,env.calendar));
+        env.jobs.add(new Job("0003","2022-10-15T09:30:00+11:00",allSkills.get(2),2500,env.calendar));
+        env.jobs.add(new Job("0004","2022-11-19T09:30:00+08:00",allSkills.get(3),300,env.calendar));
+        env.jobs.add(new Job("0005","2022-12-21T09:30:00-08:00",allSkills.get(4),500,env.calendar));
+        env.jobs.add(new Job("0006","2022-11-14T09:30:00+08:00",allSkills.get(5),900,env.calendar));
+        env.jobs.add(new Job("0007","2022-10-29T09:30:00-11:00",allSkills.get(6),827,env.calendar));
+        env.jobs.add(new Job("0008","2022-11-05T09:30:00+08:00",allSkills.get(7),4500,env.calendar));
+        env.jobs.add(new Job("0009","2022-12-11T09:30:00+10:00",allSkills.get(2),2100,env.calendar));
+        env.jobs.add(new Job("0010","2023-01-23T09:30:00-01:00",allSkills.get(5),1500,env.calendar));
     }
 }

@@ -1,5 +1,8 @@
+package algo;
+
 import entities.Job;
 import entities.Skill;
+import entities.WorkGroup;
 import exceptions.ApsException;
 
 import java.util.ArrayList;

@@ -1,19 +1,18 @@
 package utils;
 
-import com.base.sbc.aps.entity.TaskMatter;
+import entities.Job;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Comparator;
 
-public class ComparatorByWorkHours implements Comparator<TaskMatter>, Serializable {
-    public int compare(TaskMatter t1, TaskMatter t2) {
-        BigDecimal t1Hours = t1.getWorkHours();
-        BigDecimal t2Hours = t2.getWorkHours();
-        int res = t1Hours.compareTo(t2Hours);
+public class ComparatorByWorkHours implements Comparator<Job>, Serializable {
+    public int compare(Job t1, Job t2) {
+        float t1Hours = t1.duration;
+        float t2Hours = t2.duration;
+        int res = Float.compare(t1Hours, t2Hours);
 
         if (res == 0) {
-            return t1.getGiveDate().compareTo(t2.getGiveDate());
+            return t1.deliveryDate.compareTo(t2.deliveryDate);
         } else
             return res;
     }
