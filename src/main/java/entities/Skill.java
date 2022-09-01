@@ -4,7 +4,7 @@ package entities;
  * 技能类。注意重载后的hashcode()和equals()方法。为方便比较和取技能分数，Skill类的hashcode()区分技能名称，而
  * equals()方法允许名称不同但存在字母关系的技能被视作匹配技能。
  */
-public class Skill {
+public class Skill implements Comparable {
     public String name;
     public int level;
 
@@ -57,5 +57,10 @@ public class Skill {
     @Override
     public int hashCode() {
         return this.name.hashCode();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return Integer.compare(this.level, ((Skill) o).level);
     }
 }

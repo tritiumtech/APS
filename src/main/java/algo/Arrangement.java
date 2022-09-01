@@ -5,6 +5,7 @@ import entities.Skill;
 import entities.WorkGroup;
 import exceptions.ApsException;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +20,34 @@ import java.util.List;
  * </ul>
  * 在所有操作中，均需考量品类能力、交期等约束，减少计算量。
  */
+
 public class Arrangement implements Chromosome {
+    public static final int JIT = 0;
     public int chromosome[];
     public Environment env;
 
     public Arrangement(Environment env) {
         chromosome = new int[env.jobs.size()];
         this.env = env;
+    }
+
+    public static Arrangement generateInstance(Environment env) throws ApsException {
+        Arrangement arrangement = new Arrangement(env);
+        // 考虑工组品类能力
+        for (int i = 0; i < env.jobs.size(); i++) {
+            Job job = env.jobs.get(i);
+            Skill skillRoot = job.skill.getAncestor();
+            List<WorkGroup> groups = env.skillGroupMapping.get(skillRoot);
+            if (groups.size() > 0) {
+                // 随机选取
+                int selected = (int) (Math.random() * groups.size());
+                WorkGroup group = groups.get(selected);
+                arrangement.chromosome[i] = env.workGroups.indexOf(group);
+            } else {
+                throw new ApsException("APS003: 不存在工组满足任务所需技能");
+            }
+        }
+        return arrangement;
     }
 
     /**
@@ -75,27 +97,24 @@ public class Arrangement implements Chromosome {
     }
 
     @Override
-    public double cost() {
-        return 0;
+    public double cost(Environment env) {
+        double cost = 0;
+        for (WorkGroup workgroup : env.workGroups) {
+            arrangeGroup(workgroup);
+            cost += workgroup.calculateCost(PlanMode.ExpiryJIT, env.startDateTime);
+        }
+        return cost;
     }
 
-
-    public static Arrangement generateInstance(Environment env) throws ApsException {
-        Arrangement arrangement = new Arrangement(env);
-        // 考虑工组品类能力
-        for (int i = 0; i < env.jobs.size(); i++) {
-            Job job = env.jobs.get(i);
-            Skill skillRoot = job.skill.getAncestor();
-            List<WorkGroup> groups = env.workGroups.get(skillRoot);
-            if(groups.size()>0) {
-                // 随机选取
-                int groupIndex = (int) (Math.random() * groups.size());
-                arrangement.chromosome[i] = groupIndex;
-            } else {
-                throw new ApsException("APS003: 不存在工组满足任务所需技能");
+    private void arrangeGroup(WorkGroup workgroup) {
+        workgroup.clearJobs();
+        int groupIndex = env.workGroups.indexOf(workgroup);
+        for(int i = 0; i < chromosome.length; i ++) {
+            if(chromosome[i] == groupIndex) {
+                workgroup.addJob(env.jobs.get(i));
             }
         }
-        return arrangement;
+        System.out.println(workgroup);
     }
 
     public String toString() {

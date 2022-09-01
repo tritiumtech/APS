@@ -29,6 +29,7 @@ public class Job {
     /**
      * 在分配任务到工组时必须调用此方法，以确定任务时间
      * TODO 未考虑时间曲线
+     *
      * @param workGroup
      * @throws ApsException
      */
@@ -55,5 +56,9 @@ public class Job {
 
     public float workTimeDifference(ZonedDateTime t1EndDt, ZonedDateTime deliveryDate) {
         return calendar.workTimeBetween(t1EndDt, deliveryDate);
+    }
+
+    public String toString() {
+        return this.id + " " + this.skill.name + " " + this.startDt + " " + this.endDt + " " + this.deliveryDate;
     }
 }

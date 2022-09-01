@@ -108,7 +108,9 @@ public class WorkCalendar {
     }
 
     public ZonedDateTime addWorkHours(ZonedDateTime baseDate, float hoursToAdd) {
-        return null;
+        float workdayHours = (workEndTime.toSecondOfDay() - workStartTime.toSecondOfDay())/3600f;
+        float daysToAdd = hoursToAdd / workdayHours;
+        return addWorkDays(baseDate, daysToAdd);
     }
 
     public ZonedDateTime addWorkMinutes(ZonedDateTime baseDate, float minutesToAdd) {

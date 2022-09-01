@@ -1,25 +1,26 @@
 package entities;
 
+import algo.PlanMode;
+import exceptions.ApsException;
+import utils.ComparatorByExpiryJIT;
+import utils.ComparatorByExpirySEQ;
 import utils.WorkCalendar;
 
 import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class WorkGroup {
+    public String id;
     public Skill groupType;
-    public HashMap<Skill, Float> skills;
+    public HashMap<Skill, Float> skills; //in minutes
     public WorkCalendar calendar;
     public List<Job> jobs;
-    public static final int JIT = 0;
-    public static final int Sequential = 0;
 
-    public WorkGroup(Skill rootSkill) {
+    public WorkGroup(String id, Skill rootSkill, WorkCalendar calendar) {
+        this.id = id;
         skills = new HashMap<Skill, Float>();
         this.groupType = rootSkill;
-    }
-
-    public void setCalendar(WorkCalendar calendar) {
+        jobs = new ArrayList<Job>();
         this.calendar = calendar;
     }
 
@@ -36,8 +37,41 @@ public class WorkGroup {
         this.jobs.add(job);
     }
 
-    public void autoAdjust(int mode){
+    public void autoAdjust(PlanMode mode, ZonedDateTime startDateTime) {
+        try {
+            switch (mode) {
+                case ExpiryJIT:
+                    setJobsByExpiryJIT(startDateTime);
+                    break;
+                case ExpirySEQ:
+                    setJobsByExpirySEQ();
+                    break;
+                default:
+                    break;
+            }
+            System.out.println();
+        } catch (ApsException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void setJobsByExpiryJIT(ZonedDateTime startDateTime) throws ApsException {
+        Comparator<Job> comparator = new ComparatorByExpiryJIT();
+        Collections.sort(jobs, comparator);
+
+        for (Job job : jobs) {
+            // 计算任务所需耗费时间
+            job.calcWorkHours(this);
+            // 设置启动和结束
+            job.startDt = startDateTime;
+            job.endDt = calendar.addWorkHours(job.startDt,job.duration/60.0f);
+            startDateTime = job.endDt;
+        }
+    }
+
+    public void setJobsByExpirySEQ() {
+        Comparator<Job> comparator = new ComparatorByExpirySEQ();
+        Collections.sort(jobs, comparator);
     }
 
     /**
@@ -71,6 +105,19 @@ public class WorkGroup {
         for (Skill skill : skills.keySet()) {
             toReturn = toReturn + skill.name + "(" + skills.get(skill) + ") ";
         }
+        toReturn += "\n";
+        for (Job job : jobs) {
+            toReturn += job + "\n";
+        }
         return toReturn;
+    }
+
+    public double calculateCost(PlanMode mode, ZonedDateTime startDateTime) {
+        autoAdjust(mode, startDateTime);
+        return 0;
+    }
+
+    public void clearJobs() {
+        jobs.clear();
     }
 }

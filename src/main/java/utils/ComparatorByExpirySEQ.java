@@ -5,13 +5,13 @@ import entities.Job;
 import java.io.Serializable;
 import java.util.Comparator;
 
-public class ComparatorByExpiry implements Comparator<Job>, Serializable {
+public class ComparatorByExpirySEQ implements Comparator<Job>, Serializable {
 
     @Override
     public int compare(Job t1, Job t2) {
-        int res = t1.deliveryDate.compareTo(t2.deliveryDate);
+        int res = t2.deliveryDate.compareTo(t1.deliveryDate);
         if (res == 0) {
-            return Float.compare(t1.duration, t2.duration);
+            return Float.compare(t2.duration, t1.duration);
         } else
             return res;
     }
