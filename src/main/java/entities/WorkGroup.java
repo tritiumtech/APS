@@ -49,7 +49,6 @@ public class WorkGroup {
                 default:
                     break;
             }
-            System.out.println();
         } catch (ApsException e) {
             e.printStackTrace();
         }
@@ -64,7 +63,7 @@ public class WorkGroup {
             job.calcWorkHours(this);
             // 设置启动和结束
             job.startDt = startDateTime;
-            job.endDt = calendar.addWorkHours(job.startDt,job.duration/60.0f);
+            job.endDt = calendar.addWorkHours(job.startDt, job.duration / 60.0f);
             startDateTime = job.endDt;
         }
     }
@@ -112,11 +111,18 @@ public class WorkGroup {
         return toReturn;
     }
 
+    /**
+     * The higher the cost, the lower the fitness
+     * @param mode
+     * @param startDateTime
+     * @return
+     */
     public double calculateCost(PlanMode mode, ZonedDateTime startDateTime) {
         autoAdjust(mode, startDateTime);
         double cost = 0;
-        for(Job job: jobs) {
-            cost += calendar.workDaysBetween(job.endDt, job.deliveryDate);
+        for (Job job : jobs) {
+            float lateDays = calendar.workDaysBetween(job.deliveryDt, job.endDt);
+            cost += lateDays > 0 ? lateDays : 0;
         }
         return cost;
     }
