@@ -46,8 +46,12 @@ There are two types of mutations:
 2. Moving one or more tasks from one group to another (1-directional and without swapping)
 
 - chromesome 0: 0-0-0-1-0
-    - workgroup 0: $\mathbb{A}$ $\mathbb{B}$
-    - workgroup 1: $\mathbb{D}$ $\mathbb{E}$ $\mathbb{C}$
+    - workgroup 0: $\mathbb{A}$ $\mathbb{B}$ $\mathbb{C}$
+    - workgroup 1: $\mathbb{D}$ $\mathbb{E}$
+
+- chromesome 0-B: 0-0-0-1-0
+  - workgroup 0: $\mathbb{A}$ $\mathbb{B}$
+  - workgroup 1: $\mathbb{D}$ $\mathbb{E}$ $\mathbb{C}$
 
 ## Cost function
 The cost function can be customized to rule in multiple factors:
