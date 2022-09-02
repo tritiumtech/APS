@@ -100,7 +100,6 @@ public class TestEnvironment {
 
         try {
             List<WorkGroup> pair = env.randomPair();
-            System.out.println();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -8,7 +8,7 @@ import java.util.List;
  */
 public interface Chromosome {
     public List<Arrangement> crossover(Arrangement other);
-    public List<Arrangement> mutate();
+    public Arrangement mutate();
     public double cost(Environment env);
 }
 

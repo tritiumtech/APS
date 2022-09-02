@@ -7,7 +7,21 @@ import java.util.List;
 public class TestArrangement {
     public static void main(String args[]) {
         Environment env = TestEnvironment.testEnv();
-        testCrossOver(env);
+        //testCrossOver(env);
+        testMutation(env);
+    }
+
+    public static void testMutation(Environment env) {
+
+        Arrangement a = null, b = null;
+        try {
+            a = Arrangement.generateInstance(env);
+            for(int i = 0; i < 10; i++)
+                System.out.println(a.mutate());
+
+        } catch (ApsException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void testCrossOver(Environment env) {

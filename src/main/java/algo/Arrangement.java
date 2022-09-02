@@ -5,7 +5,6 @@ import entities.Skill;
 import entities.WorkGroup;
 import exceptions.ApsException;
 
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +20,7 @@ import java.util.List;
  * 在所有操作中，均需考量品类能力、交期等约束，减少计算量。
  */
 
-public class Arrangement implements Chromosome {
-    public static final int JIT = 0;
+public class Arrangement implements Chromosome, Cloneable {
     public int chromosome[];
     public Environment env;
 
@@ -91,9 +89,82 @@ public class Arrangement implements Chromosome {
         return newPair;
     }
 
+    /**
+     * 进行变异操作。同一条染色体内兼容工组互换基因。仅和Environment进行数据交互，不依赖实体类WorkGroup中的数据结构，
+     * 以免增加计算成本
+     *
+     * @return
+     */
     @Override
-    public List<Arrangement> mutate() {
-        return null;
+    public Arrangement mutate() {
+        double modeProb = 0.0; //The probability of selecting mode 1
+        try {
+            Arrangement mutated = this.clone();
+            System.out.println("\n----------------\n");
+            System.out.println("    变异前：" + " " + mutated);
+            // 1. 随机选取两个兼容工组
+            List<WorkGroup> workGroups = env.randomPair();
+            int groupOneIndex = env.workGroups.indexOf(workGroups.get(0));
+            int groupTwoIndex = env.workGroups.indexOf(workGroups.get(1));
+            System.out.println(">>> 工组选取：" + groupOneIndex + " 和 " + groupTwoIndex);
+
+            // 2. 随机选取起始点（不考虑顺序，起始点以WorkGroup类中jobs列表的索引为据）
+            List<Job> groupOneJobs = parseGroupJobs(groupOneIndex);
+            List<Job> groupTwoJobs = parseGroupJobs(groupTwoIndex);
+            int groupOneSlicePoint = (int) (groupOneJobs.size() * Math.random());
+            int groupTwoSlicePoint = (int) (groupTwoJobs.size() * Math.random());
+            System.out.println(">>> 切点选取：" + groupOneSlicePoint + " 和 " + groupTwoSlicePoint);
+
+            // 3. 互换
+            double mode = Math.random() <= modeProb ? 0 : 1;
+            if (mode == 0) {
+                // 3.1 模式一 整段互换 从起始点到工组结尾互相交换
+                for (int i = groupOneSlicePoint; i < groupOneJobs.size(); i++) {
+                    Job job = groupOneJobs.get(i);
+                    int jobIndex = env.jobs.indexOf(job);
+                    mutated.chromosome[jobIndex] = groupTwoIndex;
+                    System.out.println("        模式一: 组" + groupOneIndex + "->组" + groupTwoIndex + " " + mutated);
+                    System.out.println("        对照: 本染色体" + this);
+                }
+                for (int i = groupTwoSlicePoint; i < groupTwoJobs.size(); i++) {
+                    Job job = groupTwoJobs.get(i);
+                    int jobIndex = env.jobs.indexOf(job);
+                    mutated.chromosome[jobIndex] = groupOneIndex;
+                    System.out.println("        模式一: 组" + groupTwoIndex + "->组" + groupOneIndex + " " + mutated);
+                }
+            } else {
+                // 3.2 模式二 单点插入 从1组的起始点取一个job放入2组
+                Job job = groupOneJobs.get(groupOneSlicePoint);
+                int jobIndex = env.jobs.indexOf(job);
+                mutated.chromosome[jobIndex] = groupTwoIndex;
+                System.out.println("        模式二: 任务" + jobIndex + " " + mutated);
+            }
+            System.out.println("    完成变异：" + " " + mutated);
+            return mutated;
+        } catch (ApsException e) {
+            // Print error message and skip this round
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public List<Job> parseGroupJobs(int groupOneIndex) throws ApsException {
+        List<Job> jobs = new ArrayList<>();
+        for (int i = 0; i < chromosome.length; i++) {
+            if (chromosome[i] == groupOneIndex) {
+                jobs.add(env.jobs.get(i));
+            }
+        }
+        if(jobs.size() == 0) {
+            throw new ApsException("APS004 从染色体中未解析到该工组的任务");
+        }
+        return jobs;
+    }
+
+    public Arrangement clone() {
+        Arrangement newInstance = new Arrangement(env);
+        newInstance.chromosome = chromosome.clone();
+        return newInstance;
     }
 
     @Override
@@ -102,6 +173,7 @@ public class Arrangement implements Chromosome {
         for (WorkGroup workgroup : env.workGroups) {
             arrangeGroup(workgroup);
             cost += workgroup.calculateCost(PlanMode.ExpiryJIT, env.startDateTime);
+            System.out.println(workgroup);
         }
         return cost;
     }
@@ -109,12 +181,11 @@ public class Arrangement implements Chromosome {
     private void arrangeGroup(WorkGroup workgroup) {
         workgroup.clearJobs();
         int groupIndex = env.workGroups.indexOf(workgroup);
-        for(int i = 0; i < chromosome.length; i ++) {
-            if(chromosome[i] == groupIndex) {
+        for (int i = 0; i < chromosome.length; i++) {
+            if (chromosome[i] == groupIndex) {
                 workgroup.addJob(env.jobs.get(i));
             }
         }
-        System.out.println(workgroup);
     }
 
     public String toString() {

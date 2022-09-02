@@ -38,6 +38,11 @@ public class Environment {
         return sum;
     }
 
+    /**
+     * 随机选取两个技能上兼容的工组
+     * @return 包含两个工组的List
+     * @throws ApsException
+     */
     public List<WorkGroup> randomPair() throws ApsException {
         // 1 Select skill
         if (skillGroupMapping.keySet().size() > 0) {
@@ -55,7 +60,6 @@ public class Environment {
                 List<WorkGroup> selectedWorkGroups = skillGroupMapping.get(selected);
                 Collections.shuffle(selectedWorkGroups);
                 List<WorkGroup> pair = selectedWorkGroups.subList(0, 2);
-                System.out.println(pair);
                 return pair;
             } else {
                 throw new ApsException("APS002: 技能集均无两个以上工组供选择");
