@@ -12,7 +12,7 @@ When doing a crossover, we are effectively swapping the binding between jobs and
 Consider jobs $\mathbb{A}$, $\mathbb{B}$, $\mathbb{C}$, $\mathbb{D}$, $\mathbb{E}$
 > Before crossover:
 
-- chromesome 1: 0-0-1-1-0
+- chromesome 0: 0-0-1-1-0
 
   - workgroup 0: $\mathbb{A}$ $\mathbb{B}$ $\mathbb{E}$
   - workgroup 1: $\mathbb{C}$ $\mathbb{D}$
@@ -23,18 +23,31 @@ Consider jobs $\mathbb{A}$, $\mathbb{B}$, $\mathbb{C}$, $\mathbb{D}$, $\mathbb{E
 
 > After crossover from position 3 to 4
 
-- chromesome 1: 0-0-0-1-0
+- chromesome 2: 0-0-0-1-0
   - workgroup 0: $\mathbb{A}$ $\mathbb{B}$ $\mathbb{C}$ $\mathbb{E}$ 
   - workgroup 1: $\mathbb{D}$  
 
-- chromesome 1: 1-0-1-1-0
+- chromesome 3: 1-0-1-1-0
   - workgroup 0: $\mathbb{A}$ $\mathbb{C}$ $\mathbb{D}$
   - workgroup 1: $\mathbb{B}$ $\mathbb{E}$
 
 ## Mutation
 There are two types of mutations:
 1. Swapping two sequences of jobs between compatible work groups
+
+- chromesome 0: 0-0-0-1-0
+    - workgroup 0: $\mathbb{A}$ $\mathbb{B}$ $\mathbb{C}$
+    - workgroup 1: $\mathbb{D}$ $\mathbb{E}$
+
+- chromesome 0-A: 1-0-1-1-0
+    - workgroup 0: $\mathbb{A}$ $\mathbb{E}$
+    - workgroup 1: $\mathbb{D}$ $\mathbb{B}$ $\mathbb{C}$
+
 2. Moving one or more tasks from one group to another (1-directional and without swapping)
+
+- chromesome 0: 0-0-0-1-0
+    - workgroup 0: $\mathbb{A}$ $\mathbb{B}$
+    - workgroup 1: $\mathbb{D}$ $\mathbb{E}$ $\mathbb{C}$
 
 ## Cost function
 The cost function can be customized to rule in multiple factors:
