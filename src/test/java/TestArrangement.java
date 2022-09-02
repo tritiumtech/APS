@@ -16,8 +16,11 @@ public class TestArrangement {
         Arrangement a = null, b = null;
         try {
             a = Arrangement.generateInstance(env);
-            for(int i = 0; i < 10; i++)
-                System.out.println(a.mutate());
+            for(int i = 0; i < 10; i++) {
+                b = a.mutate();
+                if(b!=null)
+                    System.out.println(b);
+            }
 
         } catch (ApsException e) {
             e.printStackTrace();

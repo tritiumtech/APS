@@ -97,23 +97,23 @@ public class Arrangement implements Chromosome, Cloneable {
      */
     @Override
     public Arrangement mutate() {
-        double modeProb = 0.0; //The probability of selecting mode 1
+        double modeProb = 0.6; //The probability of selecting mode 1
         try {
             Arrangement mutated = this.clone();
-            System.out.println("\n----------------\n");
-            System.out.println("    变异前：" + " " + mutated);
+//            System.out.println("\n----------------\n");
+//            System.out.println("    变异前：" + " " + mutated);
             // 1. 随机选取两个兼容工组
             List<WorkGroup> workGroups = env.randomPair();
             int groupOneIndex = env.workGroups.indexOf(workGroups.get(0));
             int groupTwoIndex = env.workGroups.indexOf(workGroups.get(1));
-            System.out.println(">>> 工组选取：" + groupOneIndex + " 和 " + groupTwoIndex);
+//            System.out.println(">>> 工组选取：" + groupOneIndex + " 和 " + groupTwoIndex);
 
             // 2. 随机选取起始点（不考虑顺序，起始点以WorkGroup类中jobs列表的索引为据）
             List<Job> groupOneJobs = parseGroupJobs(groupOneIndex);
             List<Job> groupTwoJobs = parseGroupJobs(groupTwoIndex);
             int groupOneSlicePoint = (int) (groupOneJobs.size() * Math.random());
             int groupTwoSlicePoint = (int) (groupTwoJobs.size() * Math.random());
-            System.out.println(">>> 切点选取：" + groupOneSlicePoint + " 和 " + groupTwoSlicePoint);
+//            System.out.println(">>> 切点选取：" + groupOneSlicePoint + " 和 " + groupTwoSlicePoint);
 
             // 3. 互换
             double mode = Math.random() <= modeProb ? 0 : 1;
@@ -123,23 +123,25 @@ public class Arrangement implements Chromosome, Cloneable {
                     Job job = groupOneJobs.get(i);
                     int jobIndex = env.jobs.indexOf(job);
                     mutated.chromosome[jobIndex] = groupTwoIndex;
-                    System.out.println("        模式一: 组" + groupOneIndex + "->组" + groupTwoIndex + " " + mutated);
-                    System.out.println("        对照: 本染色体" + this);
+//                    System.out.println("        模式一: 组" + groupOneIndex + "->组" + groupTwoIndex + " " + mutated);
+//                    System.out.println("        对照: 本染色体" + this);
                 }
                 for (int i = groupTwoSlicePoint; i < groupTwoJobs.size(); i++) {
                     Job job = groupTwoJobs.get(i);
                     int jobIndex = env.jobs.indexOf(job);
                     mutated.chromosome[jobIndex] = groupOneIndex;
-                    System.out.println("        模式一: 组" + groupTwoIndex + "->组" + groupOneIndex + " " + mutated);
+//                    System.out.println("        模式一: 组" + groupTwoIndex + "->组" + groupOneIndex + " " + mutated);
                 }
+//                System.out.println("    完成模式一变异: " + mutated);
             } else {
                 // 3.2 模式二 单点插入 从1组的起始点取一个job放入2组
                 Job job = groupOneJobs.get(groupOneSlicePoint);
                 int jobIndex = env.jobs.indexOf(job);
                 mutated.chromosome[jobIndex] = groupTwoIndex;
-                System.out.println("        模式二: 任务" + jobIndex + " " + mutated);
+//                System.out.println("        模式二: 任务" + jobIndex + " " + mutated);
+//                System.out.println("    完成模式二变异: " + mutated);
             }
-            System.out.println("    完成变异：" + " " + mutated);
+//            System.out.println("    完成变异：" + " " + mutated);
             return mutated;
         } catch (ApsException e) {
             // Print error message and skip this round
