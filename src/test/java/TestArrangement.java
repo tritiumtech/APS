@@ -2,13 +2,25 @@ import algo.Arrangement;
 import algo.Environment;
 import exceptions.ApsException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TestArrangement {
-    public static void main(String args[]) {
+    public static void main(String args[]) throws ApsException {
         Environment env = TestEnvironment.testEnv();
         //testCrossOver(env);
-        testMutation(env);
+        //testMutation(env);
+        Arrangement a = Arrangement.generateInstance(env);
+        Arrangement b = a.clone();
+        System.out.println(a.equals(b));
+        HashMap<Arrangement,Double> testMap = new HashMap<>();
+        testMap.put(a,2.2);
+        testMap.put(b,2.3);
+        System.out.println(testMap.size());
+        List<Arrangement> arrangements = new ArrayList<>();
+        arrangements.add(a);
+        System.out.println(arrangements.contains(b));
     }
 
     public static void testMutation(Environment env) {

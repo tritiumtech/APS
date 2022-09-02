@@ -20,9 +20,10 @@ import java.util.List;
  * 在所有操作中，均需考量品类能力、交期等约束，减少计算量。
  */
 
-public class Arrangement implements Chromosome, Cloneable {
+public class Arrangement implements Chromosome, Cloneable, Comparable {
     public int chromosome[];
     public Environment env;
+    public double cost; // 初始分数值
 
     public Arrangement(Environment env) {
         chromosome = new int[env.jobs.size()];
@@ -56,6 +57,9 @@ public class Arrangement implements Chromosome, Cloneable {
      */
     @Override
     public List<Arrangement> crossover(Arrangement other) {
+        if (this.equals(other)) {
+            return null;
+        }
         // 1 随机选取起始点和结束点
         int i = (int) (Math.random() * chromosome.length);
         int j = (int) (Math.random() * chromosome.length);
@@ -63,7 +67,7 @@ public class Arrangement implements Chromosome, Cloneable {
         while (i == j) {
             j = (int) (Math.random() * chromosome.length);
         }
-        System.out.println(i + "," + j);
+        //System.out.println(i + "," + j);
 
         // 2 互换
         Arrangement var1 = new Arrangement(env);
@@ -84,8 +88,15 @@ public class Arrangement implements Chromosome, Cloneable {
         }
 
         List<Arrangement> newPair = new ArrayList<>();
-        newPair.add(var1);
-        newPair.add(var2);
+
+        if (!this.equals(var1) && !other.equals(var1)) {
+            var1.cost(env);
+            newPair.add(var1);
+        }
+        if (!this.equals(var2) && !other.equals(var2)) {
+            var2.cost(env);
+            newPair.add(var2);
+        }
         return newPair;
     }
 
@@ -97,7 +108,7 @@ public class Arrangement implements Chromosome, Cloneable {
      */
     @Override
     public Arrangement mutate() {
-        double modeProb = 0.6; //The probability of selecting mode 1
+        double modeProb = 0.5; //The probability of selecting mode 1
         try {
             Arrangement mutated = this.clone();
 //            System.out.println("\n----------------\n");
@@ -111,6 +122,9 @@ public class Arrangement implements Chromosome, Cloneable {
             // 2. 随机选取起始点（不考虑顺序，起始点以WorkGroup类中jobs列表的索引为据）
             List<Job> groupOneJobs = parseGroupJobs(groupOneIndex);
             List<Job> groupTwoJobs = parseGroupJobs(groupTwoIndex);
+            if (groupOneJobs.size() == 0 || groupTwoJobs.size() == 0) {
+                return null;
+            }
             int groupOneSlicePoint = (int) (groupOneJobs.size() * Math.random());
             int groupTwoSlicePoint = (int) (groupTwoJobs.size() * Math.random());
 //            System.out.println(">>> 切点选取：" + groupOneSlicePoint + " 和 " + groupTwoSlicePoint);
@@ -142,6 +156,10 @@ public class Arrangement implements Chromosome, Cloneable {
 //                System.out.println("    完成模式二变异: " + mutated);
             }
 //            System.out.println("    完成变异：" + " " + mutated);
+            if (this.equals(mutated)) {
+                return null;
+            }
+            mutated.cost(env);
             return mutated;
         } catch (ApsException e) {
             // Print error message and skip this round
@@ -157,9 +175,6 @@ public class Arrangement implements Chromosome, Cloneable {
                 jobs.add(env.jobs.get(i));
             }
         }
-        if(jobs.size() == 0) {
-            throw new ApsException("APS004 从染色体中未解析到该工组的任务");
-        }
         return jobs;
     }
 
@@ -171,12 +186,13 @@ public class Arrangement implements Chromosome, Cloneable {
 
     @Override
     public double cost(Environment env) {
-        double cost = 0;
+        cost = 0;
         for (WorkGroup workgroup : env.workGroups) {
             arrangeGroup(workgroup);
             cost += workgroup.calculateCost(PlanMode.ExpiryJIT, env.startDateTime);
-            System.out.println(workgroup);
+//            System.out.println(workgroup);
         }
+        this.cost = cost;
         return cost;
     }
 
@@ -192,9 +208,48 @@ public class Arrangement implements Chromosome, Cloneable {
 
     public String toString() {
         String toReturn = "";
+
         for (int i = 0; i < chromosome.length; i++) {
             toReturn += (chromosome[i] + " ");
         }
+        for (int i = 0; i < env.workGroups.size(); i++) {
+            WorkGroup group = env.workGroups.get(i);
+            arrangeGroup(group);
+            group.autoAdjust(PlanMode.ExpiryJIT, env.startDateTime);
+            System.out.print(group.groupType.name + " " + i + ": ");
+            for (int j = 0; j < chromosome.length; j++) {
+                if (chromosome[j] == i) {
+                    Job job = env.jobs.get(i);
+                    System.out.print("(" + job.id+" "+job.skill.name + " " + job.startDt.toLocalDate() + " " +
+                            job.deliveryDt.toLocalDate() + "=>" + env.calendar.workDaysBetween(job.deliveryDt, job.endDt) + " " + job.endDt.toLocalDate() + ")");
+                }
+            }
+            System.out.println();
+        }
         return toReturn;
+    }
+
+    /**
+     * Lower cost is better, thus goes first
+     *
+     * @param o
+     * @return
+     */
+    @Override
+    public int compareTo(Object o) {
+        return Double.compare(this.cost, ((Arrangement) o).cost);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Arrangement other = (Arrangement) o;
+        boolean isEqual = true;
+        for (int i = 0; i < chromosome.length; i++) {
+            if (chromosome[i] != other.chromosome[i]) {
+                isEqual = false;
+                break;
+            }
+        }
+        return isEqual;
     }
 }

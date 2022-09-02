@@ -12,7 +12,7 @@ public class ComparatorByWorkHours implements Comparator<Job>, Serializable {
         int res = Float.compare(t1Hours, t2Hours);
 
         if (res == 0) {
-            return t1.deliveryDate.compareTo(t2.deliveryDate);
+            return t1.deliveryDt.compareTo(t2.deliveryDt);
         } else
             return res;
     }

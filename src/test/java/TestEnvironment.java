@@ -52,34 +52,33 @@ public class TestEnvironment {
         allSkills.add(braTypeC);
         allSkills.add(braTypeSuper);
         allSkills.add(pantyTypeA);
-        allSkills.add(pantyTypeA);
-        allSkills.add(pantyTypeA);
+        allSkills.add(pantyTypeB);
+        allSkills.add(pantyTypeC);
         allSkills.add(pantyTypeSuper);
         /* End of adding test skills */
 
         /* Setting up work groups */
         WorkGroup bra1 = new WorkGroup("bra1", braTypeSuper, env.calendar);
-        bra1.addSkill(braTypeA, 12.0f);
-        bra1.addSkill(braTypeB, 11.3f);
-        bra1.addSkill(braTypeSuper, 13.2f);
+        bra1.addSkill(braTypeA, 30.0f);
+        bra1.addSkill(braTypeC, 60.0f);
+        bra1.addSkill(braTypeSuper, 45.0f);
         WorkGroup bra2 = new WorkGroup("bra2", braTypeSuper, env.calendar);
-        bra2.addSkill(braTypeB, 18.2f);
-        bra2.addSkill(braTypeC, 12.0f);
-        bra2.addSkill(braTypeSuper, 15.7f);
+        bra2.addSkill(braTypeA, 60.0f);
+        bra2.addSkill(braTypeC, 30.0f);
+        bra2.addSkill(braTypeSuper, 45.0f);
         WorkGroup bra3 = new WorkGroup("bra3", braTypeSuper, env.calendar);
-        bra3.addSkill(braTypeB, 16.1f);
-        bra3.addSkill(braTypeC, 14.9f);
-        bra3.addSkill(braTypeSuper, 15.5f);
+        bra3.addSkill(braTypeB, 20.0f);
+        bra3.addSkill(braTypeSuper, 20.0f);
         WorkGroup panties1 = new WorkGroup("panties1", pantyTypeSuper, env.calendar);
-        panties1.addSkill(pantyTypeA, 9f);
-        panties1.addSkill(pantyTypeB, 10.7f);
-        panties1.addSkill(pantyTypeC, 12f);
-        panties1.addSkill(pantyTypeSuper, 11.1f);
+        panties1.addSkill(pantyTypeA, 12f);
+        panties1.addSkill(pantyTypeB, 30f);
+        panties1.addSkill(pantyTypeC, 15f);
+        panties1.addSkill(pantyTypeSuper, 15f);
         WorkGroup panties2 = new WorkGroup("panties2", pantyTypeSuper, env.calendar);
-        panties2.addSkill(pantyTypeA, 5f);
-        panties2.addSkill(pantyTypeB, 8.9f);
-        panties2.addSkill(pantyTypeC, 11f);
-        panties2.addSkill(pantyTypeSuper, 9.7f);
+        panties2.addSkill(pantyTypeA, 15f);
+        panties2.addSkill(pantyTypeB, 10f);
+        panties2.addSkill(pantyTypeC, 5f);
+        panties2.addSkill(pantyTypeSuper, 10f);
         /* End of setting up work groups */
 
         env.skillGroupMapping = new HashMap<Skill, List<WorkGroup>>();
@@ -106,16 +105,16 @@ public class TestEnvironment {
     }
 
     private static void seedJobs(Environment env, List<Skill> allSkills) {
-        Collections.shuffle(allSkills);
-        env.jobs.add(new Job("0001", "2022-12-03T08:30:00+08:00", allSkills.get(0), 1000, env.calendar));
-        env.jobs.add(new Job("0002", "2022-09-12T13:30:00+10:00", allSkills.get(1), 1250, env.calendar));
-        env.jobs.add(new Job("0003", "2022-10-15T09:30:00+11:00", allSkills.get(2), 2500, env.calendar));
-        env.jobs.add(new Job("0004", "2022-11-19T09:30:00+08:00", allSkills.get(3), 300, env.calendar));
+        //Collections.shuffle(allSkills);
+        env.jobs.add(new Job("0001", "2022-12-03T08:30:00+08:00", allSkills.get(0), 500, env.calendar));//250hr
+        env.jobs.add(new Job("0002", "2022-09-12T13:30:00+10:00", allSkills.get(1), 1000, env.calendar));
+        env.jobs.add(new Job("0003", "2022-10-15T09:30:00+11:00", allSkills.get(2), 500, env.calendar));
+        env.jobs.add(new Job("0004", "2022-11-19T09:30:00+08:00", allSkills.get(3), 1000, env.calendar));
         env.jobs.add(new Job("0005", "2022-12-21T09:30:00-08:00", allSkills.get(4), 500, env.calendar));
-        env.jobs.add(new Job("0006", "2022-11-14T09:30:00+08:00", allSkills.get(5), 900, env.calendar));
-        env.jobs.add(new Job("0007", "2022-10-29T09:30:00-11:00", allSkills.get(6), 827, env.calendar));
-        env.jobs.add(new Job("0008", "2022-11-05T09:30:00+08:00", allSkills.get(7), 4500, env.calendar));
-        env.jobs.add(new Job("0009", "2022-12-11T09:30:00+10:00", allSkills.get(2), 2100, env.calendar));
-        env.jobs.add(new Job("0010", "2023-01-23T09:30:00-01:00", allSkills.get(5), 1500, env.calendar));
+        env.jobs.add(new Job("0006", "2022-11-14T09:30:00+08:00", allSkills.get(5), 1000, env.calendar));
+        env.jobs.add(new Job("0007", "2022-10-29T09:30:00-11:00", allSkills.get(6), 500, env.calendar));
+        env.jobs.add(new Job("0008", "2022-11-05T09:30:00+08:00", allSkills.get(7), 1000, env.calendar));
+        env.jobs.add(new Job("0009", "2022-12-11T09:30:00+10:00", allSkills.get(2), 500, env.calendar));
+        env.jobs.add(new Job("0010", "2023-01-23T09:30:00-01:00", allSkills.get(5), 1000, env.calendar));
     }
 }

@@ -14,8 +14,8 @@ public class ComparatorByCriticalRatio implements Comparator<Job>, Serializable 
         ZonedDateTime t1EndDt = t1.calcEndDt(now, t1.duration);
         ZonedDateTime t2EndDt = t2.calcEndDt(now, t2.duration);
 
-        float distance1 = t1.workTimeDifference(t1EndDt, t1.deliveryDate);
-        float distance2 = t2.workTimeDifference(t2EndDt, t2.deliveryDate);
+        float distance1 = t1.workTimeDifference(t1EndDt, t1.deliveryDt);
+        float distance2 = t2.workTimeDifference(t2EndDt, t2.deliveryDt);
 
         float ratio1 = t1.duration == 0 ? distance1 / t1.duration : 0;
         float ratio2 = t2.duration == 0 ? distance1 / t2.duration : 0;

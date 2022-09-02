@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Job {
     public String id;
-    public ZonedDateTime deliveryDate;
+    public ZonedDateTime deliveryDt;
     public Skill skill;
     public int pieces;
     public ZonedDateTime startDt;
@@ -20,7 +20,7 @@ public class Job {
 
     public Job(String id, String deliveryDate, Skill skill, int pieces, WorkCalendar calendar) {
         this.id = id;
-        this.deliveryDate = ZonedDateTime.parse(deliveryDate);
+        this.deliveryDt = ZonedDateTime.parse(deliveryDate);
         this.skill = skill;
         this.pieces = pieces;
         this.calendar = calendar;
@@ -59,6 +59,6 @@ public class Job {
     }
 
     public String toString() {
-        return this.id + " " + this.skill.name + " " + this.startDt + " " + this.endDt + " " + this.deliveryDate;
+        return this.id + " " + this.skill.name + " " + this.startDt + " " + this.endDt + " " + this.deliveryDt;
     }
 }
