@@ -35,9 +35,13 @@ Consider jobs $\mathbb{A}$, $\mathbb{B}$, $\mathbb{C}$, $\mathbb{D}$, $\mathbb{E
 There are two types of mutations:
 1. Swapping two sequences of jobs between compatible work groups
 
+> Before tpye-A mutation
+
 - chromesome 0: 0-0-0-1-0
     - workgroup 0: $\mathbb{A}$ $\mathbb{B}$ $\mathbb{C}$
     - workgroup 1: $\mathbb{D}$ $\mathbb{E}$
+    - 
+> After type-A mutation
 
 - chromesome 0-A: 1-0-1-1-0
     - workgroup 0: $\mathbb{A}$ $\mathbb{E}$
@@ -45,9 +49,13 @@ There are two types of mutations:
 
 2. Moving one or more tasks from one group to another (1-directional and without swapping)
 
+> Before type-B mutation
+
 - chromesome 0: 0-0-0-1-0
     - workgroup 0: $\mathbb{A}$ $\mathbb{B}$ $\mathbb{C}$
     - workgroup 1: $\mathbb{D}$ $\mathbb{E}$
+
+> After type-B mutation
 
 - chromesome 0-B: 0-0-0-1-0
   - workgroup 0: $\mathbb{A}$ $\mathbb{B}$
