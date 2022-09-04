@@ -73,3 +73,14 @@ keeps the mapping between jobs and work groups, and the sequence of orders in th
 based on an assumption: given the sequence of jobs in a work group, it is easy to calculate the 
 optimal time arrangements by shifting the jobs along the timeline. Therefore, the cost of a 
 specific arrangement is actually the minimal cost calculated from a sequence of jobs in a workgroup.
+
+# System Workflow
+The workflow is implemented in the IMS class. Each epoch comprises three steps:
+- populate() This step generates an initial population of chromosomes (Arrangment instances). The
+cost of each arrangement is calculated after each instance gets generated.
+- proliferate() This step does crossovers and mutations based on the initial population
+  - fitness scores. The fitness scores are calculated based on the initial scores, after linear
+  formation into positive numbers
+  - rollthewheel(). Chromosomes participate in crossover or mutations based on their fitness. Higher
+  fitness means higher chance of being selected
+- eliminate() This step removes unfit instances and keeps only the best ones.

@@ -20,8 +20,8 @@ import java.util.List;
  * 在所有操作中，均需考量品类能力、交期等约束，减少计算量。
  */
 
-public class Arrangement implements Chromosome, Cloneable, Comparable {
-    public int chromosome[];
+public class Arrangement implements Chromosome, Cloneable, Comparable<Arrangement> {
+    public int[] chromosome;
     public Environment env;
     public double cost; // 初始分数值
 
@@ -52,8 +52,8 @@ public class Arrangement implements Chromosome, Cloneable, Comparable {
     /**
      * 进行基因互换操作。
      *
-     * @param other
-     * @return
+     * @param other 另一个工组安排方案对应的染色体
+     * @return crossover产生的一对基因（也可能为空列表，取决于crossover之后是否产生重复）
      */
     @Override
     public List<Arrangement> crossover(Arrangement other) {
@@ -104,7 +104,7 @@ public class Arrangement implements Chromosome, Cloneable, Comparable {
      * 进行变异操作。同一条染色体内兼容工组互换基因。仅和Environment进行数据交互，不依赖实体类WorkGroup中的数据结构，
      * 以免增加计算成本
      *
-     * @return
+     * @return 返回变异后产生的染色体
      */
     @Override
     public Arrangement mutate() {
@@ -192,7 +192,6 @@ public class Arrangement implements Chromosome, Cloneable, Comparable {
             cost += workgroup.calculateCost(PlanMode.ExpiryJIT, env.startDateTime);
 //            System.out.println(workgroup);
         }
-        this.cost = cost;
         return cost;
     }
 
@@ -206,11 +205,38 @@ public class Arrangement implements Chromosome, Cloneable, Comparable {
         }
     }
 
-    public String toString() {
-        String toReturn = "";
+    /**
+     * Lower cost is better, thus goes first
+     *
+     * @param o 对比的另一条染色体
+     * @return 按cost来比较先后
+     */
+    @Override
+    public int compareTo(Arrangement o) {
+        return Double.compare(this.cost, o.cost);
+    }
 
-        for (int i = 0; i < chromosome.length; i++) {
-            toReturn += (chromosome[i] + " ");
+    @Override
+    public boolean equals(Object o) {
+        if(o.getClass() == this.getClass()) {
+            Arrangement other = (Arrangement) o;
+            boolean isEqual = true;
+            for (int i = 0; i < chromosome.length; i++) {
+                if (chromosome[i] != other.chromosome[i]) {
+                    isEqual = false;
+                    break;
+                }
+            }
+            return isEqual;
+        }
+        return false;
+    }
+
+    public String toString() {
+        StringBuilder toReturn = new StringBuilder();
+
+        for (int k : chromosome) {
+            toReturn.append(k).append(" ");
         }
         for (int i = 0; i < env.workGroups.size(); i++) {
             WorkGroup group = env.workGroups.get(i);
@@ -219,37 +245,13 @@ public class Arrangement implements Chromosome, Cloneable, Comparable {
             System.out.print(group.groupType.name + " " + i + ": ");
             for (int j = 0; j < chromosome.length; j++) {
                 if (chromosome[j] == i) {
-                    Job job = env.jobs.get(i);
+                    Job job = env.jobs.get(j);
                     System.out.print("(" + job.id+" "+job.skill.name + " " + job.startDt.toLocalDate() + " " +
                             job.deliveryDt.toLocalDate() + "=>" + env.calendar.workDaysBetween(job.deliveryDt, job.endDt) + " " + job.endDt.toLocalDate() + ")");
                 }
             }
             System.out.println();
         }
-        return toReturn;
-    }
-
-    /**
-     * Lower cost is better, thus goes first
-     *
-     * @param o
-     * @return
-     */
-    @Override
-    public int compareTo(Object o) {
-        return Double.compare(this.cost, ((Arrangement) o).cost);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        Arrangement other = (Arrangement) o;
-        boolean isEqual = true;
-        for (int i = 0; i < chromosome.length; i++) {
-            if (chromosome[i] != other.chromosome[i]) {
-                isEqual = false;
-                break;
-            }
-        }
-        return isEqual;
+        return toReturn.toString();
     }
 }

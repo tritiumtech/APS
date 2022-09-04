@@ -90,12 +90,12 @@ public class TestEnvironment {
         env.workGroups.add(bra2);
         env.workGroups.add(bra3);
         env.skillGroupMapping.put(braTypeSuper, braGroups);
-        List<WorkGroup> pantyGroups = new ArrayList<WorkGroup>();
-        pantyGroups.add(panties1);
-        pantyGroups.add(panties2);
+        List<WorkGroup> pantieGroups = new ArrayList<WorkGroup>();
+        pantieGroups.add(panties1);
+        pantieGroups.add(panties2);
         env.workGroups.add(panties1);
         env.workGroups.add(panties2);
-        env.skillGroupMapping.put(pantyTypeSuper, pantyGroups);
+        env.skillGroupMapping.put(pantyTypeSuper, pantieGroups);
 
         try {
             List<WorkGroup> pair = env.randomPair();

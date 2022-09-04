@@ -65,8 +65,10 @@ public class IMS {
 //                System.out.println(secondArrangement);
                 newPair = firstArrangement.crossover(secondArrangement);
             }
-            if (newPair.size() > 1)
-                instances.addAll(newPair);
+            if (newPair.size() > 1) {
+                for (Arrangement arrangement : newPair)
+                    instances.add(arrangement);
+            }
         }
         // Mutate
         for (int i = 0; i < mutationCounts; i++) {
