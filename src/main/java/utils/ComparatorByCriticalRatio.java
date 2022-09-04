@@ -18,7 +18,7 @@ public class ComparatorByCriticalRatio implements Comparator<Job>, Serializable 
         float distance2 = t2.workTimeDifference(t2EndDt, t2.deliveryDt);
 
         float ratio1 = t1.duration == 0 ? distance1 / t1.duration : 0;
-        float ratio2 = t2.duration == 0 ? distance1 / t2.duration : 0;
+        float ratio2 = t2.duration == 0 ? distance2 / t2.duration : 0;
 
         return Float.compare(ratio1, ratio2);
     }

@@ -16,7 +16,7 @@ import java.util.List;
  * @author Amos Zhou
  */
 public class Environment {
-    public HashMap<Skill, List<WorkGroup>> skillGroupMapping = new HashMap<Skill, List<WorkGroup>>();
+    public HashMap<Skill, List<WorkGroup>> skillGroupMapping = new HashMap<>();
     public List<WorkGroup> workGroups = new ArrayList<>();
     public List<Job> jobs = new ArrayList<>();
     public WorkCalendar calendar;
@@ -24,18 +24,6 @@ public class Environment {
 
     public Environment(WorkCalendar calendar) {
         this.calendar = calendar;
-    }
-
-    public double evaluate(Arrangement arrangement) {
-        return -1;
-    }
-
-    public int numOfWorkGroups() {
-        int sum = 0;
-        for (Skill skill : skillGroupMapping.keySet()) {
-            sum += skillGroupMapping.get(skill).size();
-        }
-        return sum;
     }
 
     /**
@@ -59,8 +47,7 @@ public class Environment {
                 // 2 Select two work groups from the skill category
                 List<WorkGroup> selectedWorkGroups = skillGroupMapping.get(selected);
                 Collections.shuffle(selectedWorkGroups);
-                List<WorkGroup> pair = selectedWorkGroups.subList(0, 2);
-                return pair;
+                return selectedWorkGroups.subList(0, 2);
             } else {
                 throw new ApsException("APS002: 技能集均无两个以上工组供选择");
             }

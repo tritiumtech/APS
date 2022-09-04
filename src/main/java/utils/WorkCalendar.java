@@ -18,7 +18,7 @@ public class WorkCalendar {
         this.workEndTime = workEndTime;
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         float a = -1.2f;
         int b = (int) a;
         LocalTime t1 = LocalTime.parse("09:00");

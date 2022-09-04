@@ -18,9 +18,9 @@ public class WorkGroup {
 
     public WorkGroup(String id, Skill rootSkill, WorkCalendar calendar) {
         this.id = id;
-        skills = new HashMap<Skill, Float>();
+        skills = new HashMap<>();
         this.groupType = rootSkill;
-        jobs = new ArrayList<Job>();
+        jobs = new ArrayList<>();
         this.calendar = calendar;
     }
 
@@ -31,7 +31,7 @@ public class WorkGroup {
     /**
      * 把一个任务加到一个工组。
      *
-     * @param job
+     * @param job 被添加的任务
      */
     public void addJob(Job job) {
         this.jobs.add(job);
@@ -56,7 +56,7 @@ public class WorkGroup {
 
     public void setJobsByExpiryJIT(ZonedDateTime startDateTime) throws ApsException {
         Comparator<Job> comparator = new ComparatorByExpiryJIT();
-        Collections.sort(jobs, comparator);
+        jobs.sort(comparator);
 
         for (Job job : jobs) {
             // 计算任务所需耗费时间
@@ -70,7 +70,7 @@ public class WorkGroup {
 
     public void setJobsByExpirySEQ() {
         Comparator<Job> comparator = new ComparatorByExpirySEQ();
-        Collections.sort(jobs, comparator);
+        jobs.sort(comparator);
     }
 
     /**
@@ -81,31 +81,31 @@ public class WorkGroup {
      *     互换，视为不兼容。这种情况下，采用第三类操作（跨工组插入）来达到遗传算法的空间搜索</li>
      * </ul>
      *
-     * @param other
-     * @return
+     * @param other 被比较的另一个工组
+     * @return 是则两工组兼容，否则不兼容
      */
     public boolean compatibleWith(WorkGroup other) {
         return this.groupType.hashCode() == other.groupType.hashCode();
     }
 
     public String toString() {
-        String toReturn = groupType.name + ":";
+        StringBuilder toReturn = new StringBuilder(groupType.name + ":");
         for (Skill skill : skills.keySet()) {
-            toReturn = toReturn + skill.name + "(" + skills.get(skill) + ") ";
+            toReturn.append(skill.name).append("(").append(skills.get(skill)).append(") ");
         }
-        toReturn += "\n";
+        toReturn.append("\n");
         for (Job job : jobs) {
-            toReturn += job + "\n";
+            toReturn.append(job).append("\n");
         }
-        return toReturn;
+        return toReturn.toString();
     }
 
     /**
      * The higher the cost, the lower the fitness
      *
-     * @param mode
-     * @param startDateTime
-     * @return
+     * @param mode 工组内排任务的计划模式
+     * @param startDateTime 排计划的起始时间
+     * @return 该工组内的综合成本（包括延迟、翻单等）
      */
     public double calculateCost(PlanMode mode, ZonedDateTime startDateTime) {
         autoAdjust(mode, startDateTime);

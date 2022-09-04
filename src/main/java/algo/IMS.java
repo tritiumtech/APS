@@ -23,7 +23,6 @@ public class IMS {
      * 随机生成初代种群
      *
      * @param size 种群大小
-     * @return
      */
     public void populate(int size) throws ApsException {
         for (int i = 0; i < size; i++) {
@@ -39,7 +38,7 @@ public class IMS {
      * 增殖
      */
     public void proliferate(int crossoverCounts, int mutationCounts) throws ApsException {
-        double chances[] = calculateChances();
+        double[] chances = calculateChances();
         // Cross Over
         for (int i = 0; i < crossoverCounts; i++) {
             int firstCandidate = rollTheWheel(chances);
@@ -67,9 +66,11 @@ public class IMS {
             }
             if (newPair.size() > 1) {
                 for (Arrangement arrangement : newPair)
-                    instances.add(arrangement);
+                    if (!instances.contains(arrangement))
+                        instances.add(arrangement);
             }
         }
+
         // Mutate
         for (int i = 0; i < mutationCounts; i++) {
             int candidate = rollTheWheel(chances);
@@ -86,7 +87,7 @@ public class IMS {
     /**
      * 计算轮盘赌中的生存几率
      *
-     * @return
+     * @return 计算所得的轮盘格选中几率
      */
     public double[] calculateChances() throws ApsException {
         if (instances.size() > 0) {
@@ -129,8 +130,8 @@ public class IMS {
     /**
      * 轮盘赌算法，chances数组中记录被抽中的概率
      *
-     * @param chances
-     * @return
+     * @param chances 轮盘格选中几率
+     * @return 被选中的元素下标
      */
     public int rollTheWheel(double[] chances) {
         Random r = new Random();
