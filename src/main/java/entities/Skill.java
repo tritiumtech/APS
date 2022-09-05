@@ -51,7 +51,7 @@ public class Skill implements Comparable {
     }
 
     /**
-     * 两个技能当且仅当技能名一致时有一样的hashcode（为避免使用map之类数据结构时性能出问题），但equals方法中允许跨层级字母关系视为相等
+     * 两个技能当且仅当技能名一致时有一样的hashcode（为避免使用map之类数据结构时性能出问题），但equals方法中允许跨层级子母关系视为相等
      * @return
      */
     @Override

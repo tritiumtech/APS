@@ -153,9 +153,9 @@ public class IMS {
             System.out.println("Epoch " + epoch);
             populate(1000);
             System.out.println("Initial population");
-            proliferate(500, 500);
+            proliferate(1000, 1000);
             System.out.println("Proliferation completed");
-            eliminate(1000);
+            eliminate(500);
             double score = stats();
             if (lastScore == score) {
                 runCount++;

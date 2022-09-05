@@ -2,6 +2,8 @@ package utils;
 
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: Amos Zhou
@@ -12,6 +14,7 @@ import java.time.temporal.TemporalAdjusters;
 public class WorkCalendar {
     public LocalTime workStartTime;
     public LocalTime workEndTime;
+    public List<TimeSlot> shifts = new ArrayList<TimeSlot>();
 
     public WorkCalendar(LocalTime workStartTime, LocalTime workEndTime) {
         this.workStartTime = workStartTime;
