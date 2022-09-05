@@ -15,6 +15,7 @@ public class WorkCalendar {
     public LocalTime workStartTime;
     public LocalTime workEndTime;
     public List<TimeSlot> shifts = new ArrayList<TimeSlot>();
+    public List<LocalDate> holidays = new ArrayList<LocalDate>();
 
     public WorkCalendar(LocalTime workStartTime, LocalTime workEndTime) {
         this.workStartTime = workStartTime;
