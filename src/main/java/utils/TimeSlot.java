@@ -3,6 +3,11 @@ package utils;
 import java.time.LocalTime;
 
 public class TimeSlot {
-    public LocalTime startDateTime;
-    public LocalTime endDateTime;
+    public LocalTime startTime;
+    public LocalTime endTime;
+
+    public TimeSlot(LocalTime start, LocalTime end) {
+        startTime = start;
+        endTime = end;
+    }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class TestEnvironment {
     public static Environment testEnv() {
-        WorkCalendar calendar = new WorkCalendar(LocalTime.parse("09:00"), LocalTime.parse("18:00"));
+        WorkCalendar calendar = new WorkCalendar("GMT-8:00");
         Environment env = new Environment(calendar);
         env.startDateTime = ZonedDateTime.parse("2022-10-01T09:00:00.000000+08:00[Asia/Shanghai]");
         List<Skill> allSkills = new ArrayList<>();
