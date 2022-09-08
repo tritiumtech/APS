@@ -15,9 +15,9 @@ public class Skill implements Comparable {
         this.level = level;
     }
 
-    public Skill getAncestor(){
+    public Skill getAncestor() {
         Skill ancestor = this;
-        while(ancestor.parent!=null){
+        while (ancestor.parent != null) {
             ancestor = ancestor.parent;
         }
         return ancestor;
@@ -27,31 +27,35 @@ public class Skill implements Comparable {
         this.parent = parent;
     }
 
-    /**
-     * 两种情况下视为相等：
-     * <ul>
-     *     <li>技能名完全一致</li>
-     *     <li>技能名不一致但存在子母技能关系</li>
-     * </ul>
-     *
-     * @param o
-     * @return
-     */
     @Override
-    public boolean equals(Object o) {
-        Skill ref = (Skill) o;
-        boolean exactMatch = this.name.equals(ref.name);
-        boolean crossLevelMatch = false;
-        if(this.parent != null && this.parent.name.equals(ref.name)) {
-            crossLevelMatch = true;
-        } else if(ref.parent != null && this.name.equals(ref.parent.name)) {
-            crossLevelMatch = true;
+    public String toString() {
+        return "Skill{" +
+                "name='" + name + '\'' +
+                ", level=" + level +
+                '}';
+    }
+
+    /**
+     * 当other技能和本技能相同，或者是本技能的母系技能时，视作compatible，因为此时可以得到可靠的效率值
+     */
+    public boolean compatibleWith(Skill other) {
+        if (this.name.equals(other.name)) {
+            return true;
+        } else {
+            Skill thisSkill = this;
+            while (thisSkill.parent != null) {
+                thisSkill = thisSkill.parent;
+                if (thisSkill.name.equals(other.name)) {
+                    return true;
+                }
+            }
+            return false;
         }
-        return exactMatch || crossLevelMatch;
     }
 
     /**
      * 两个技能当且仅当技能名一致时有一样的hashcode（为避免使用map之类数据结构时性能出问题），但equals方法中允许跨层级子母关系视为相等
+     *
      * @return
      */
     @Override

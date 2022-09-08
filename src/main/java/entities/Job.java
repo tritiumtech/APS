@@ -37,7 +37,7 @@ public class Job {
         // Do skill match
         List matches = new ArrayList<>();
         for (Skill skill : workGroup.skills.keySet()) {
-            if (this.skill.equals(skill)) {
+            if (this.skill.compatibleWith(skill)) {
                 matches.add(skill);
             }
         }

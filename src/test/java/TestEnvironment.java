@@ -69,6 +69,7 @@ public class TestEnvironment {
         WorkGroup bra3 = new WorkGroup("bra3", braTypeSuper, env.calendar);
         bra3.addSkill(braTypeB, 20.0f);
         bra3.addSkill(braTypeSuper, 20.0f);
+        bra3.addSkill(pantyTypeSuper,100f);
         WorkGroup panties1 = new WorkGroup("panties1", pantyTypeSuper, env.calendar);
         panties1.addSkill(pantyTypeA, 12f);
         panties1.addSkill(pantyTypeB, 30f);
@@ -93,6 +94,7 @@ public class TestEnvironment {
         List<WorkGroup> pantieGroups = new ArrayList<WorkGroup>();
         pantieGroups.add(panties1);
         pantieGroups.add(panties2);
+        pantieGroups.add(bra3);
         env.workGroups.add(panties1);
         env.workGroups.add(panties2);
         env.skillGroupMapping.put(pantyTypeSuper, pantieGroups);
