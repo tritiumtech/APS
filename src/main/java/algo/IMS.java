@@ -152,11 +152,11 @@ public class IMS {
         for (int epoch = 0; epoch < 100; epoch++) {
             System.out.println("Epoch " + epoch);
             populate(1000);
-            System.out.println("Initial population");
-            proliferate(1000, 1000);
-            System.out.println("Proliferation completed");
-            eliminate(500);
-            double score = stats();
+            System.out.println("Initial population " + instances.size());
+            proliferate(5000, 5000);
+            System.out.println("Proliferation completed " + instances.size());
+            eliminate(1000);
+            double score = stats(50);
             if (lastScore == score) {
                 runCount++;
             } else {
@@ -167,28 +167,29 @@ public class IMS {
                 break;
             }
         }
-        printInstances();
+        printInstances(20);
     }
 
-    public void printInstances() {
+    public void printInstances(int topN) {
         Collections.sort(instances);
-        int i = 0;
-        for (Arrangement arrangement : instances) {
+
+        for (int i = 0, len = instances.size(); i < topN && i < len; i++) {
+            Arrangement arrangement = instances.get(i);
             System.out.println(i + " " + arrangement.cost + " " + arrangement);
         }
     }
 
-    public double stats() {
+    public double stats(int topN) {
         Arrangement first = instances.get(0);
-        double min = first.cost, max = first.cost;
+        double min = first.cost;
         double sum = 0;
-        for (Arrangement arrangement : instances) {
+        for (int i = 0, len = instances.size(); i < len && i < topN; i++) {
+            Arrangement arrangement = instances.get(i);
             sum += arrangement.cost;
             if (arrangement.cost < min) min = arrangement.cost;
-            if (arrangement.cost > max) max = arrangement.cost;
         }
         double mean = sum / instances.size();
-        System.out.println("Population: " + instances.size() + " Mean=" + sum / instances.size() + " min=" + min + " max=" + max);
+        System.out.println("Population: " + instances.size() + " Mean@" + topN + "=" + sum / topN + " min=" + min);
         return mean;
     }
 }
