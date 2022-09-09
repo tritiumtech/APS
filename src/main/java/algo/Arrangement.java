@@ -78,9 +78,19 @@ public class Arrangement implements Chromosome, Cloneable, Comparable<Arrangemen
             var1.chromosome[m] = chromosome[m];
             var2.chromosome[m] = other.chromosome[m];
         }
+        // 互换部分，需考虑是否技能兼容
         for (; x < y; x++) {
-            var1.chromosome[x] = other.chromosome[x];
-            var2.chromosome[x] = chromosome[x];
+            Job job = env.jobs.get(x);
+            WorkGroup a = env.workGroups.get(var1.chromosome[x]);
+            WorkGroup b = env.workGroups.get(var2.chromosome[x]);
+            if (a.canDo(job) && b.canDo(job)) {
+                var1.chromosome[x] = other.chromosome[x];
+                var2.chromosome[x] = chromosome[x];
+            } else {
+                // 若不兼容，跳过互换此job对应的工组
+                var1.chromosome[x] = chromosome[x];
+                var2.chromosome[x] = other.chromosome[x];
+            }
         }
         for (m = y; m < chromosome.length; m++) {
             var1.chromosome[m] = chromosome[m];
@@ -136,14 +146,20 @@ public class Arrangement implements Chromosome, Cloneable, Comparable<Arrangemen
                 for (int i = groupOneSlicePoint; i < groupOneJobs.size(); i++) {
                     Job job = groupOneJobs.get(i);
                     int jobIndex = env.jobs.indexOf(job);
-                    mutated.chromosome[jobIndex] = groupTwoIndex;
+                    // 考虑GroupTwo确实能做
+                    if (workGroups.get(1).canDo(job)) {
+                        mutated.chromosome[jobIndex] = groupTwoIndex;
+                    }
 //                    System.out.println("        模式一: 组" + groupOneIndex + "->组" + groupTwoIndex + " " + mutated);
 //                    System.out.println("        对照: 本染色体" + this);
                 }
                 for (int i = groupTwoSlicePoint; i < groupTwoJobs.size(); i++) {
                     Job job = groupTwoJobs.get(i);
                     int jobIndex = env.jobs.indexOf(job);
-                    mutated.chromosome[jobIndex] = groupOneIndex;
+                    // 考虑GroupOne确实能做
+                    if (workGroups.get(0).canDo(job)) {
+                        mutated.chromosome[jobIndex] = groupOneIndex;
+                    }
 //                    System.out.println("        模式一: 组" + groupTwoIndex + "->组" + groupOneIndex + " " + mutated);
                 }
 //                System.out.println("    完成模式一变异: " + mutated);
@@ -151,7 +167,9 @@ public class Arrangement implements Chromosome, Cloneable, Comparable<Arrangemen
                 // 3.2 模式二 单点插入 从1组的起始点取一个job放入2组
                 Job job = groupOneJobs.get(groupOneSlicePoint);
                 int jobIndex = env.jobs.indexOf(job);
-                mutated.chromosome[jobIndex] = groupTwoIndex;
+                if (workGroups.get(1).canDo(job)) {
+                    mutated.chromosome[jobIndex] = groupTwoIndex;
+                }
 //                System.out.println("        模式二: 任务" + jobIndex + " " + mutated);
 //                System.out.println("    完成模式二变异: " + mutated);
             }
@@ -218,7 +236,7 @@ public class Arrangement implements Chromosome, Cloneable, Comparable<Arrangemen
 
     @Override
     public boolean equals(Object o) {
-        if(o.getClass() == this.getClass()) {
+        if (o.getClass() == this.getClass()) {
             Arrangement other = (Arrangement) o;
             boolean isEqual = true;
             for (int i = 0; i < chromosome.length; i++) {
@@ -246,7 +264,7 @@ public class Arrangement implements Chromosome, Cloneable, Comparable<Arrangemen
             for (int j = 0; j < chromosome.length; j++) {
                 if (chromosome[j] == i) {
                     Job job = env.jobs.get(j);
-                    System.out.print("(" + job.id+" "+job.skill.name + " " + job.startDt.toLocalDate() + " " +
+                    System.out.print("(" + job.id + " " + job.skill.name + " " + job.startDt.toLocalDate() + " " +
                             job.deliveryDt.toLocalDate() + "=>" + env.calendar.workDaysBetween(job.deliveryDt, job.endDt) + " " + job.endDt.toLocalDate() + ")");
                 }
             }

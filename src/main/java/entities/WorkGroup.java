@@ -7,7 +7,10 @@ import utils.ComparatorByExpirySEQ;
 import utils.WorkCalendar;
 
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 public class WorkGroup {
     public String id;
@@ -103,7 +106,7 @@ public class WorkGroup {
     /**
      * The higher the cost, the lower the fitness
      *
-     * @param mode 工组内排任务的计划模式
+     * @param mode          工组内排任务的计划模式
      * @param startDateTime 排计划的起始时间
      * @return 该工组内的综合成本（包括延迟、翻单等）
      */
@@ -119,5 +122,16 @@ public class WorkGroup {
 
     public void clearJobs() {
         jobs.clear();
+    }
+
+    public boolean canDo(Job job) {
+        // Do skill match
+        List matches = new ArrayList<>();
+        for (Skill skill : this.skills.keySet()) {
+            if (job.skill.compatibleWith(skill)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
