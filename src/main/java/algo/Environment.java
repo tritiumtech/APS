@@ -22,6 +22,8 @@ public class Environment {
     public WorkCalendar calendar;
     public ZonedDateTime startDateTime; // 排程时间窗口的起始
 
+    public HashMap<PlanningConstraint, ScoreStats> scoreStats = new HashMap<PlanningConstraint, ScoreStats>();
+
     public Environment(WorkCalendar calendar) {
         this.calendar = calendar;
     }
