@@ -202,17 +202,34 @@ public class Arrangement implements Chromosome, Cloneable, Comparable<Arrangemen
         return newInstance;
     }
 
+    /**
+     * 返回一个方案的总体成本。也可视作健康度的一种度量，但分数越低越健康
+     *
+     * @param env
+     * @return
+     */
     @Override
     public double cost(Environment env) {
-        cost = 0;
-        for (WorkGroup workgroup : env.workGroups) {
-            arrangeGroup(workgroup);
-            cost += workgroup.calculateCost(PlanMode.ExpiryJIT, env.startDateTime);
-//            System.out.println(workgroup);
-        }
         return cost;
     }
 
+    /**
+     * 计算一个方案的总体成本。此方法负责触发工组的内部排序，并根据排序后的job状态为每一个任务计算原始分数，包括延迟日、提前日等
+     *
+     * @param env
+     */
+    public void calculateRawScores(Environment env) {
+        for (WorkGroup workgroup : env.workGroups) {
+            arrangeGroup(workgroup);
+            workgroup.calculateRawCost(PlanMode.ExpiryJIT, env);
+        }
+    }
+
+    /**
+     * 根据染色体编码，将任务排发到工作组
+     *
+     * @param workgroup
+     */
     private void arrangeGroup(WorkGroup workgroup) {
         workgroup.clearJobs();
         int groupIndex = env.workGroups.indexOf(workgroup);
@@ -271,5 +288,13 @@ public class Arrangement implements Chromosome, Cloneable, Comparable<Arrangemen
             System.out.println();
         }
         return toReturn.toString();
+    }
+
+    public void calculateWeightedScores(Environment env) {
+        cost = 0;
+        for (WorkGroup workgroup : env.workGroups) {
+            arrangeGroup(workgroup);
+            cost += workgroup.calculateWeightedCost(PlanMode.ExpiryJIT, env);
+        }
     }
 }

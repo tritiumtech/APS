@@ -1,11 +1,15 @@
 package entities;
 
+import algo.Constraint;
+import algo.Environment;
+import algo.PlanningConstraint;
 import exceptions.ApsException;
 import utils.WorkCalendar;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class Job {
@@ -17,6 +21,8 @@ public class Job {
     public ZonedDateTime endDt;
     public float duration;
     public WorkCalendar calendar;
+    public HashMap<Constraint, Float> scores = new HashMap<>();
+    public float cost;
 
     public Job(String id, String deliveryDate, Skill skill, int pieces, WorkCalendar calendar) {
         this.id = id;
@@ -60,5 +66,23 @@ public class Job {
 
     public String toString() {
         return this.id + " " + this.skill.name + " " + this.startDt + " " + this.endDt + " " + this.deliveryDt;
+    }
+
+    public void calculateDelayDays(Environment env) {
+        float lateDays = calendar.workDaysBetween(deliveryDt, endDt);
+        lateDays = lateDays > 0 ? lateDays : 0;
+        scores.put(Constraint.DELAY, lateDays);
+        PlanningConstraint constraint = env.constraints.get(Constraint.DELAY);
+        if (constraint.stats.max < lateDays) constraint.stats.max = lateDays;
+        if (constraint.stats.min > lateDays) constraint.stats.min = lateDays;
+    }
+
+    public void calculateEarlyDays(Environment env) {
+        float earlyDays = calendar.workDaysBetween(endDt, deliveryDt);
+        earlyDays = earlyDays > 0 ? earlyDays : 0;
+        scores.put(Constraint.EARLY, earlyDays > 0 ? earlyDays : 0);
+        PlanningConstraint constraint = env.constraints.get(Constraint.EARLY);
+        if (constraint.stats.max < earlyDays) constraint.stats.max = earlyDays;
+        if (constraint.stats.min > earlyDays) constraint.stats.min = earlyDays;
     }
 }

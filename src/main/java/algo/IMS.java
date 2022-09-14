@@ -1,11 +1,9 @@
 package algo;
 
+import entities.Job;
 import exceptions.ApsException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author Amos Zhou
@@ -25,13 +23,18 @@ public class IMS {
      * @param size 种群大小
      */
     public void populate(int size) throws ApsException {
+        // 生成初代种群并计算初始分数
         for (int i = 0; i < size; i++) {
             Arrangement arrangement = Arrangement.generateInstance(env);
             if (!instances.contains(arrangement)) {
-                arrangement.cost(env);
+                // 计算初始分数
+                arrangement.calculateRawScores(env);
+                arrangement.calculateWeightedScores(env);
                 instances.add(arrangement);
             }
         }
+
+
     }
 
     /**

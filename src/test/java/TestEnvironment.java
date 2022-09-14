@@ -1,4 +1,7 @@
+import algo.Constraint;
 import algo.Environment;
+import algo.PlanningConstraint;
+import algo.ScoreStats;
 import entities.Job;
 import entities.Skill;
 import entities.WorkGroup;
@@ -7,7 +10,6 @@ import utils.WorkCalendar;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,7 +23,15 @@ public class TestEnvironment {
         System.out.println("Work groups initialised: " + env.skillGroupMapping.size());
         seedJobs(env, allSkills);
         System.out.println("Jobs initialised: " + env.jobs.size());
+        seedConstraints(env);
         return env;
+    }
+
+    private static void seedConstraints(Environment env) {
+        PlanningConstraint earlyDays = new PlanningConstraint(Constraint.DELAY, 1);
+        PlanningConstraint lateDays = new PlanningConstraint(Constraint.EARLY, 0.5f);
+        env.constraints.put(earlyDays.name, earlyDays);
+        env.constraints.put(lateDays.name, lateDays);
     }
 
     public static void main(String args[]) {
@@ -69,7 +79,7 @@ public class TestEnvironment {
         WorkGroup bra3 = new WorkGroup("bra3", braTypeSuper, env.calendar);
         bra3.addSkill(braTypeB, 20.0f);
         bra3.addSkill(braTypeSuper, 20.0f);
-        bra3.addSkill(pantyTypeSuper,100f);
+        bra3.addSkill(pantyTypeSuper, 100f);
         WorkGroup panties1 = new WorkGroup("panties1", pantyTypeSuper, env.calendar);
         panties1.addSkill(pantyTypeA, 12f);
         panties1.addSkill(pantyTypeB, 30f);

@@ -1,16 +1,16 @@
 package entities;
 
+import algo.Constraint;
+import algo.Environment;
 import algo.PlanMode;
+import algo.ScoreStats;
 import exceptions.ApsException;
 import utils.ComparatorByExpiryJIT;
 import utils.ComparatorByExpirySEQ;
 import utils.WorkCalendar;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class WorkGroup {
     public String id;
@@ -106,17 +106,67 @@ public class WorkGroup {
     /**
      * The higher the cost, the lower the fitness
      *
-     * @param mode          工组内排任务的计划模式
-     * @param startDateTime 排计划的起始时间
+     * @param mode 工组内排任务的计划模式
+     * @param env  排产环境
      * @return 该工组内的综合成本（包括延迟、翻单等）
      */
-    public double calculateCost(PlanMode mode, ZonedDateTime startDateTime) {
+    public void calculateRawCost(PlanMode mode, Environment env) {
+        ZonedDateTime startDateTime = env.startDateTime;
+        autoAdjust(mode, startDateTime);
+        for (Job job : jobs) {
+            for (Constraint constraint : env.constraints.keySet()) {
+                switch (constraint) {
+                    case DELAY:
+                        job.calculateDelayDays(env);
+                        break;
+                    case EARLY:
+                        job.calculateEarlyDays(env);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    /**
+     * The higher the cost, the lower the fitness
+     *
+     * @param mode 工组内排任务的计划模式
+     * @param env  排产环境
+     * @return 该工组内的综合成本（包括延迟、翻单等）
+     */
+    public double calculateWeightedCost(PlanMode mode, Environment env) {
+        ZonedDateTime startDateTime = env.startDateTime;
         autoAdjust(mode, startDateTime);
         double cost = 0;
+
+        // 根据种群数据，进行分数的归一化处理
+        Set<Constraint> constraints = env.constraints.keySet();
         for (Job job : jobs) {
-            float lateDays = calendar.workDaysBetween(job.deliveryDt, job.endDt);
-            cost += lateDays > 0 ? lateDays : 0;
+            for (Constraint constraint : constraints) {
+                ScoreStats stats = env.constraints.get(constraint).stats;
+                float score = job.scores.get(constraint);
+                if (stats.max == stats.min) score = (stats.max == 0 ? 0 : 1);
+                else {
+                    score = (score - stats.min) / (stats.max - stats.min);
+                }
+                job.scores.put(constraint, score);
+            }
         }
+
+        // 对归一化之后的分数进行加权平均
+        for (Job job : jobs) {
+            float weightedSum = 0, totalWeight = 0;
+            for (Constraint constraint : constraints) {
+                float weight = env.constraints.get(constraint).weight;
+                totalWeight += weight;
+                weightedSum += job.scores.get(constraint) * weight;
+            }
+            job.cost = weightedSum / totalWeight;
+            cost += job.cost;
+        }
+
         return cost;
     }
 
