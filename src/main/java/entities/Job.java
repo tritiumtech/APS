@@ -68,21 +68,25 @@ public class Job {
         return this.id + " " + this.skill.name + " " + this.startDt + " " + this.endDt + " " + this.deliveryDt;
     }
 
-    public void calculateDelayDays(Environment env) {
+    public void calculateDelayDays(Environment env, boolean updateEnv) {
         float lateDays = calendar.workDaysBetween(deliveryDt, endDt);
         lateDays = lateDays > 0 ? lateDays : 0;
         scores.put(Constraint.DELAY, lateDays);
         PlanningConstraint constraint = env.constraints.get(Constraint.DELAY);
-        if (constraint.stats.max < lateDays) constraint.stats.max = lateDays;
-        if (constraint.stats.min > lateDays) constraint.stats.min = lateDays;
+        if (updateEnv) {
+            if (constraint.stats.max < lateDays) constraint.stats.max = lateDays;
+            if (constraint.stats.min > lateDays) constraint.stats.min = lateDays;
+        }
     }
 
-    public void calculateEarlyDays(Environment env) {
+    public void calculateEarlyDays(Environment env, boolean updateEnv) {
         float earlyDays = calendar.workDaysBetween(endDt, deliveryDt);
         earlyDays = earlyDays > 0 ? earlyDays : 0;
         scores.put(Constraint.EARLY, earlyDays > 0 ? earlyDays : 0);
         PlanningConstraint constraint = env.constraints.get(Constraint.EARLY);
-        if (constraint.stats.max < earlyDays) constraint.stats.max = earlyDays;
-        if (constraint.stats.min > earlyDays) constraint.stats.min = earlyDays;
+        if (updateEnv) {
+            if (constraint.stats.max < earlyDays) constraint.stats.max = earlyDays;
+            if (constraint.stats.min > earlyDays) constraint.stats.min = earlyDays;
+        }
     }
 }

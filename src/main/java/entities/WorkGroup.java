@@ -110,17 +110,17 @@ public class WorkGroup {
      * @param env  排产环境
      * @return 该工组内的综合成本（包括延迟、翻单等）
      */
-    public void calculateRawCost(PlanMode mode, Environment env) {
+    public void calculateRawCost(PlanMode mode, Environment env, boolean updateEnv) {
         ZonedDateTime startDateTime = env.startDateTime;
         autoAdjust(mode, startDateTime);
         for (Job job : jobs) {
             for (Constraint constraint : env.constraints.keySet()) {
                 switch (constraint) {
                     case DELAY:
-                        job.calculateDelayDays(env);
+                        job.calculateDelayDays(env, updateEnv);
                         break;
                     case EARLY:
-                        job.calculateEarlyDays(env);
+                        job.calculateEarlyDays(env, updateEnv);
                         break;
                     default:
                         break;

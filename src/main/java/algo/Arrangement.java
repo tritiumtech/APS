@@ -100,11 +100,13 @@ public class Arrangement implements Chromosome, Cloneable, Comparable<Arrangemen
         List<Arrangement> newPair = new ArrayList<>();
 
         if (!this.equals(var1) && !other.equals(var1)) {
-            var1.cost(env);
+            var1.calculateRawScores(env, false);
+            var1.calculateWeightedScores(env);
             newPair.add(var1);
         }
         if (!this.equals(var2) && !other.equals(var2)) {
-            var2.cost(env);
+            var2.calculateRawScores(env, false);
+            var2.calculateWeightedScores(env);
             newPair.add(var2);
         }
         return newPair;
@@ -177,7 +179,8 @@ public class Arrangement implements Chromosome, Cloneable, Comparable<Arrangemen
             if (this.equals(mutated)) {
                 return null;
             }
-            mutated.cost(env);
+            mutated.calculateRawScores(env, false);
+            mutated.calculateWeightedScores(env);
             return mutated;
         } catch (ApsException e) {
             // Print error message and skip this round
@@ -218,10 +221,10 @@ public class Arrangement implements Chromosome, Cloneable, Comparable<Arrangemen
      *
      * @param env
      */
-    public void calculateRawScores(Environment env) {
+    public void calculateRawScores(Environment env, boolean updateEnv) {
         for (WorkGroup workgroup : env.workGroups) {
             arrangeGroup(workgroup);
-            workgroup.calculateRawCost(PlanMode.ExpiryJIT, env);
+            workgroup.calculateRawCost(PlanMode.ExpiryJIT, env, updateEnv);
         }
     }
 

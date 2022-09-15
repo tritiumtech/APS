@@ -1,9 +1,11 @@
 package algo;
 
-import entities.Job;
 import exceptions.ApsException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 /**
  * @author Amos Zhou
@@ -28,7 +30,7 @@ public class IMS {
             Arrangement arrangement = Arrangement.generateInstance(env);
             if (!instances.contains(arrangement)) {
                 // 计算初始分数
-                arrangement.calculateRawScores(env);
+                arrangement.calculateRawScores(env, true);
                 arrangement.calculateWeightedScores(env);
                 instances.add(arrangement);
             }
