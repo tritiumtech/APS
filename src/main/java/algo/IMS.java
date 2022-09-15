@@ -24,19 +24,21 @@ public class IMS {
      *
      * @param size 种群大小
      */
-    public void populate(int size) throws ApsException {
+    public void populate(int size, boolean firstPass) throws ApsException {
         // 生成初代种群并计算初始分数
         for (int i = 0; i < size; i++) {
             Arrangement arrangement = Arrangement.generateInstance(env);
             if (!instances.contains(arrangement)) {
                 // 计算初始分数
-                arrangement.calculateRawScores(env, true);
-                arrangement.calculateWeightedScores(env);
+                if (firstPass) {
+                    arrangement.calculateRawScores(env, true);
+                    arrangement.calculateWeightedScores(env);
+                } else {
+                    arrangement.calculateScores(env);
+                }
                 instances.add(arrangement);
             }
         }
-
-
     }
 
     /**
@@ -154,9 +156,12 @@ public class IMS {
     public void evolve() throws ApsException {
         double lastScore = 0;
         int runCount = 0;
+        populate(1000, true);
+        System.out.println("Initial population " + instances.size());
+
         for (int epoch = 0; epoch < 100; epoch++) {
             System.out.println("Epoch " + epoch);
-            populate(1000);
+            populate(1000, false);
             System.out.println("Initial population " + instances.size());
             proliferate(5000, 5000);
             System.out.println("Proliferation completed " + instances.size());

@@ -184,4 +184,52 @@ public class WorkGroup {
         }
         return false;
     }
+
+    public float calculateCost(PlanMode mode, Environment env) {
+        ZonedDateTime startDateTime = env.startDateTime;
+        float cost = 0;
+
+        autoAdjust(mode, startDateTime);
+        for (Job job : jobs) {
+            for (Constraint constraint : env.constraints.keySet()) {
+                switch (constraint) {
+                    case DELAY:
+                        job.calculateDelayDays(env, false);
+                        break;
+                    case EARLY:
+                        job.calculateEarlyDays(env, false);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        // 根据种群数据，进行分数的归一化处理
+        Set<Constraint> constraints = env.constraints.keySet();
+        for (Job job : jobs) {
+            for (Constraint constraint : constraints) {
+                ScoreStats stats = env.constraints.get(constraint).stats;
+                float score = job.scores.get(constraint);
+                if (stats.max == stats.min) score = (stats.max == 0 ? 0 : 1);
+                else {
+                    score = (score - stats.min) / (stats.max - stats.min);
+                }
+                job.scores.put(constraint, score);
+            }
+        }
+
+        // 对归一化之后的分数进行加权平均
+        for (Job job : jobs) {
+            float weightedSum = 0, totalWeight = 0;
+            for (Constraint constraint : constraints) {
+                float weight = env.constraints.get(constraint).weight;
+                totalWeight += weight;
+                weightedSum += job.scores.get(constraint) * weight;
+            }
+            job.cost = weightedSum / totalWeight;
+            cost += job.cost;
+        }
+        return cost;
+    }
 }
