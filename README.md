@@ -16,26 +16,31 @@ Consider jobs $\mathbb{A}$, $\mathbb{B}$, $\mathbb{C}$, $\mathbb{D}$, $\mathbb{E
 > Before crossover:
 在杂交之前：
 - chromesome 0: 0-0-1-1-0
-
+编号为0的染色体：0-0-1-1-0
   - workgroup 0: $\mathbb{A}$ $\mathbb{B}$ $\mathbb{E}$
   - workgroup 1: $\mathbb{C}$ $\mathbb{D}$
 
 - chromesome 1: 1-0-0-1-0
+编号为1的染色体：1-0-0-1-0
   - workgroup 0: $\mathbb{B}$ $\mathbb{C}$ $\mathbb{E}$ 
   - workgroup 1: $\mathbb{A}$ $\mathbb{D}$  
 
 > After crossover from position 3 to 4
-
+在从3到4号位置的杂交完成后：
 - chromesome 2: 0-0-0-1-0
+编号为2的染色体：0-0-0-1-0
   - workgroup 0: $\mathbb{A}$ $\mathbb{B}$ $\mathbb{C}$ $\mathbb{E}$ 
   - workgroup 1: $\mathbb{D}$  
 
 - chromesome 3: 1-0-1-1-0
+编号为2的染色体：0-0-0-1-0
   - workgroup 0: $\mathbb{A}$ $\mathbb{C}$ $\mathbb{D}$
   - workgroup 1: $\mathbb{B}$ $\mathbb{E}$
 
-## Mutation
+## Mutation 变异
+
 There are two types of mutations:
+存在两种
 1. Swapping two sequences of jobs between compatible work groups
 
 > Before tpye-A mutation
