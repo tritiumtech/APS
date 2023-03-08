@@ -40,9 +40,9 @@ Consider jobs $\mathbb{A}$, $\mathbb{B}$, $\mathbb{C}$, $\mathbb{D}$, $\mathbb{E
 ## Mutation 变异
 
 There are two types of mutations:
-存在两种
+存在两种变异形式
 1. Swapping two sequences of jobs between compatible work groups
-
+在两个能力兼容的开发组之间，对换两个任务序列
 > Before tpye-A mutation
 
 - chromesome 0: 0-0-0-1-0
@@ -56,7 +56,7 @@ There are two types of mutations:
     - workgroup 1: $\mathbb{D}$ $\mathbb{B}$ $\mathbb{C}$
 
 2. Moving one or more tasks from one group to another (1-directional and without swapping)
-
+将一些任务从一个开发小组搬送到另一个开发小组
 > Before type-B mutation
 
 - chromesome 0: 0-0-0-1-0
@@ -69,13 +69,18 @@ There are two types of mutations:
   - workgroup 0: $\mathbb{A}$ $\mathbb{B}$
   - workgroup 1: $\mathbb{D}$ $\mathbb{E}$ $\mathbb{C}$
 
-## Cost function
+## Cost function 成本函数
 The cost function can be customized to rule in multiple factors:
 1. Number of late days (or $days \times pieces$, or $days \times amount$)
 2. Arbitrary penalties applied to special cases, such as 
     * Repeating orders allocated to an inexperienced work group
     * Brand X is a prioritized client, its penalty of delay is set to five times of regular cost
-
+成本函数可以基于多个因素进行自定义：
+1. 功能交付延迟天数 (或 天数 \times 项目总额, 或 天数 \times 项目人天)
+2. Arbitrary penalties applied to special cases, such as 
+    * Repeating orders allocated to an inexperienced work group
+    * Brand X is a prioritized client, its penalty of delay is set to five times of regular cost
+    
 When calculating the cost, we adopt an uncommon strategy. The chromosome encoding scheme only
 keeps the mapping between jobs and work groups, and the sequence of orders in the groups. This is
 based on an assumption: given the sequence of jobs in a work group, it is easy to calculate the 
