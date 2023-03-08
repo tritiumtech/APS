@@ -1,17 +1,20 @@
 # APS
 An Advanced Planning & Scheduling system based on genetic algorithms.
+基于遗传算法的任务高级排程系统
 
-## Chromosome Encoding
+## Chromosome Encoding 染色体编码
 Use a 1-dimensional array to represent an arrangement of tasks. Each 
 element in the array designates the work group to which
 the task is allocated. The actual sequence of tasks in the group is 
 determined by a set of rules applied in the cost function.
+用一个一维数组来表达一个任务分配计划。每个数组里的元素代表一个开发小组。这个小组的实际任务顺序则由cost函数来决定。这种编码方式是降低计算维度的关键。
 
-## Crossover
+## Crossover 杂交
 When doing a crossover, we are effectively swapping the binding between jobs and workgroups.
 Consider jobs $\mathbb{A}$, $\mathbb{B}$, $\mathbb{C}$, $\mathbb{D}$, $\mathbb{E}$
+在做杂交动作时，我们其实是在对换任务和开发小组的关联关系。考虑任务A、B、C、D、E
 > Before crossover:
-
+在杂交之前：
 - chromesome 0: 0-0-1-1-0
 
   - workgroup 0: $\mathbb{A}$ $\mathbb{B}$ $\mathbb{E}$
