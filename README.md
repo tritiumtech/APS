@@ -79,15 +79,17 @@ The cost function can be customized to rule in multiple factors:
 
 成本函数可以基于多个因素进行自定义：
 1. 功能交付延迟天数 (或 天数 \times 项目总额, 或 天数 \times 项目人天)
-2. Arbitrary penalties applied to special cases, such as 
-    * Repeating orders allocated to an inexperienced work group
-    * Brand X is a prioritized client, its penalty of delay is set to five times of regular cost
+2. 其他特定算法惩罚, 例如 
+    * 有延续性的项目被分配到过去未承接该项目的开发组
+    * 客户指定开发小组，如果在其他开发组完成，罚分无限大
     
 When calculating the cost, we adopt an uncommon strategy. The chromosome encoding scheme only
 keeps the mapping between jobs and work groups, and the sequence of orders in the groups. This is
 based on an assumption: given the sequence of jobs in a work group, it is easy to calculate the 
 optimal time arrangements by shifting the jobs along the timeline. Therefore, the cost of a 
 specific arrangement is actually the minimal cost calculated from a sequence of jobs in a workgroup.
+
+在算法中，我们使用一个比较特殊的机制。染色体编码方案中并不按最低粒度来表达所有任务次序、承接小组，因为这样的计算空间会严重膨胀。我们做了个合理假设：在给定开发组中，给以一组任务，是可以基于策略或局部的调优算法来快速得到最佳方案的。所以计算全局最优的任务分配方案，可以退化为计算最优的任务-小组绑定方式问题。
 
 # System Workflow
 The workflow is implemented in the IMS class. Each epoch comprises three steps:
