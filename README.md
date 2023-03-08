@@ -70,11 +70,13 @@ There are two types of mutations:
   - workgroup 1: $\mathbb{D}$ $\mathbb{E}$ $\mathbb{C}$
 
 ## Cost function 成本函数
+
 The cost function can be customized to rule in multiple factors:
 1. Number of late days (or $days \times pieces$, or $days \times amount$)
 2. Arbitrary penalties applied to special cases, such as 
     * Repeating orders allocated to an inexperienced work group
     * Brand X is a prioritized client, its penalty of delay is set to five times of regular cost
+
 成本函数可以基于多个因素进行自定义：
 1. 功能交付延迟天数 (或 天数 \times 项目总额, 或 天数 \times 项目人天)
 2. Arbitrary penalties applied to special cases, such as 
